@@ -7,7 +7,7 @@ enum ItemType
 }
 public static class ItemDB
 {
-    public static List<ItemDB> EquipList = new List<ItemDB>();
+    public static List<EquipDB> EquipList = new List<EquipDB>();
 
     public static void EquipInit()
     {
