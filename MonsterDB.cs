@@ -35,7 +35,8 @@ public struct MonsterData
 	// 몬스터 타입 추후 예정
 
 	// 몬스터 생성자
-	public MonsterData(int monsterID, int monsterLv, string monsterName, int monsterHp, int monsterAtk, int monsterDef, int monsterDropGold, int monsterExp)
+	public MonsterData(int monsterID, int monsterLv, string monsterName, int monsterHp, 
+					   int monsterAtk, int monsterDef, int monsterDropGold, int monsterExp)
 	{
 		this.monsterID = monsterID;
 		this.monsterLv = monsterLv;
