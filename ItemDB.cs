@@ -3,16 +3,28 @@
 enum ItemType
 {
     Weapon,
+    SubWeapon,
     Armor
 }
 public static class ItemDB
 {
-    public static List<Item> EquipList = new List<Item>();
+    public static List<ItemDB> EquipList = new List<ItemDB>();
 
     public static void EquipInit()
     {
         // 장비아이템 등록
-        EquipList.Add(new Item(1, ItemType.Weapon, 목검, 0, 0, 0, "나무로 만든 검이다.\n금방이라도 부서질 것같다.", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Weapon, "목검", 0, 10, 0, "나무로 만든 검이다.\n금방이라도 부서질 것같다.", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Weapon, "숏 소드", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Weapon, "브로드 소드", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Weapon, "바스타드 소드", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Weapon, "세이버", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Weapon, "메이스", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.SubWeapon, "라운드 실드", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.SubWeapon, "카이트 실드", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Armor, "메이스", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Armor, "메이스", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Armor, "메이스", 0, 10, 0, "", 100));
+        EquipList.Add(new EquipDB(1, ItemType.Armor, "메이스", 0, 10, 0, "", 100));
     }
 }
 
