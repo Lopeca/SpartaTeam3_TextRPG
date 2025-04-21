@@ -37,7 +37,8 @@ public struct EquipDB
     public int itemValue;
 
     // 장비 생성자
-    public EquipDB(int itemID, ItemType itemType, string itemName, int itemAtk, int itemDef, int itemDesc, int itemValue)
+    public EquipDB(int itemID, ItemType itemType, string itemName, 
+        int itemAtk, int itemDef, int itemDesc, int itemValue)
     {
         this.itemID = itemID;
         this.itemType = itemType;
