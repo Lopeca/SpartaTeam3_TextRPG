@@ -27,7 +27,7 @@ public struct MonsterData
 	public int monsterAtk;
 	public int monsterDef;
 	public int monsterDropGold;
-	// 몬스터 타입 추후
+	// 몬스터 타입 추후 예정
 
 	// 몬스터 생성자
 	public MonsterData(int monsterID, string monsterName, int monsterHp, int monsterAtk, int monsterDef, int monsterDropGold)
