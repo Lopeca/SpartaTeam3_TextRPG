@@ -1,0 +1,17 @@
+## 코드 흐름
+메인에서 game.Play() 한 줄로 게임 시작<br/>
+Play()에서 시작 씬을 로드<br/>
+콘솔창에 보여지는 건 scene.RenderScene()이라는 함수를 통해서 보여짐<br/>
+
+** 팁 : 함수에 포커스를 놓고 F12를 누르면 함수 내용물을 볼 수 있습니다
+
+## 씬 만드는 법
+1. 솔루션 탐색기에서 Scenes 폴더에 StartScene.cs를 복사하거나 새로운 파일을 추가합니다.
+2. 원하는 씬 이름으로 파일명과 클래스명을 잘 일치시키고, : SceneBase 까지 붙입니다. 이게 상속 단계입니다.
+3. SceneBase를 붙이면 클래스 명에 빨간 줄이 뜨는데 Alt+Enter 누르고 추상 클래스 구현 누르면
+AddSelections()와 RenderCustomArea() 껍데기가 나옵니다.
+4. AddSelections에는 숫자 입력에 반응할 선택지를 넣습니다. <br/>(StartScene 참고, new Menu일 필요는 없지만 Menu를 안 쓸 거라면 인터페이스랑 액션에 대해 알아볼 필요가 있어요)
+5. RenderCustomArea()는 콘솔창에 출력되는 것들을 자유롭게 꾸미면 되는 부분입니다. Console.WriteLine을 남발하면 되는 공간입니다.<br/>
+   참고로 선택지 리스트를 출력하는 함수가 부모 클래스인 SceneBase에 있으니 활용하셔도 되고<br/>
+   선택지에 이름 넣어서 한번에 출력하는걸 활용하지 않고 그냥 수동으로 만들어도 됩니다.
+6. RenderCustomArea() 가 끝나면 자동으로 0번 나가기와 입력을 묻는 기능이 출력되도록 구성되어 있습니다.
