@@ -12,10 +12,10 @@ public class Menu : ISelectable
 
     public string Name { get; private set; }
 
-    public Menu(string name, Action loadStatusScene)
+    public Menu(string name, Action action)
     {
         Name = name;
-        menuAction = loadStatusScene;
+        menuAction += action;
     }
 
 
