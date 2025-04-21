@@ -10,6 +10,8 @@ public class Game
     public static Game Instance;
 
     public Stack<SceneBase> scenes;
+    public PlayerLSH player;
+    public string? messageLog = null;
 
     // 플레이어 정보 여기 들어가야함
     public Game()
@@ -20,7 +22,7 @@ public class Game
 
     internal void Play()
     {
-        LoadScene(new StartScene());
+        LoadScene(new CreateCharacterScene());
     }
 
     public void LoadScene(SceneBase scene)
