@@ -11,14 +11,14 @@ public static class ItemDB
 
     public static void EquipInit()
     {
-        // 아이템 등록
+        // 장비아이템 등록
         EquipList.Add(new Item(1, ItemType.Weapon, 목검, 0, 0, 0, "나무로 만든 검이다.\n금방이라도 부서질 것같다.", 100));
     }
 }
 
 public struct EquipDB
 {
-    // 옵션 초기화
+    // 아이템 옵션 선언
     public int itemID;
     public ItemType itemType;
     public string itemName;
