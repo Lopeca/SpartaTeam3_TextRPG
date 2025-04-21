@@ -26,3 +26,4 @@ D:\study\SpartaCoding\SpartaTeam3_TextRPG\obj\Debug\net8.0\refint\Team3TextRPG.d
 D:\study\SpartaCoding\SpartaTeam3_TextRPG\obj\Debug\net8.0\Team3TextRPG.pdb
 D:\study\SpartaCoding\SpartaTeam3_TextRPG\obj\Debug\net8.0\Team3TextRPG.genruntimeconfig.cache
 D:\study\SpartaCoding\SpartaTeam3_TextRPG\obj\Debug\net8.0\ref\Team3TextRPG.dll
+D:\study\SpartaCoding\SpartaTeam3_TextRPG\obj\Debug\net8.0\Team3TextRPG.sourcelink.json

@@ -25,7 +25,7 @@ public abstract class SceneBase
     public abstract void AddSelections();
 
 
-    public void RenderScene()
+    public virtual void RenderScene()
     {
         Console.Clear();
         RenderCustomArea();
