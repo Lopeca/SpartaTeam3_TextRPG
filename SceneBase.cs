@@ -11,14 +11,11 @@ public abstract class SceneBase
 
     public SceneBase()
     {
-        selections = new List<ISelectable>();
-        Init();
+        selections = [new Menu("나가기", Game.Instance.CloseScene)];
     }
 
     public void Init()
     {
-        selections.Add(new Menu("나가기", Game.Instance.CloseScene));
-
         AddSelections();
     }
 
