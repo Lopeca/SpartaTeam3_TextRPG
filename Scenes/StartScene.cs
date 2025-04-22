@@ -9,6 +9,7 @@ public class StartScene : SceneBase
     public override void AddSelections()
     {
         selections.Add(new Menu("상태 보기", LoadStatusScene));
+        selections.Add(new Menu("전투 시작", LoadBattleScene));
 
     }
 
@@ -33,7 +34,8 @@ public class StartScene : SceneBase
 
     public void LoadBattleScene()
     {
-        Console.WriteLine("전투 씬 대신에 출력되는 문장");
+        Game.Instance.LoadScene(new RG_TEAM_P_TXT_2.Scenes.BattleScene());
+        //Console.WriteLine("전투 씬 대신에 출력되는 문장");
     }
 }
 

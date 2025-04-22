@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class ChadStr
+
+public static class CharacterClassStr
 {
     public static readonly Dictionary<Chad, string> Map = new()
     {
@@ -20,36 +20,43 @@ public static class ChadStr
         Map.TryGetValue(chad, out var result);
         return result;
     }
-} 
-public enum Chad
+}
+public enum CharacterClass
 {
     Warrior,
     Mage,
     Archer,
     Assassin
 }
-
-[Serializable]
-public class PlayerLSH
+public class Player
 {
     public string Name { get; set; }
 
     public int level;
-    public Chad chad;
-    public string Job;
-    public int atk = 10;
+    public CharacterClass characterClass;
+    public int atk;
     public int def;
-    public int hp = 100;
-    public int currenthp = 100;
+    public int hp;
     public int gold;
 
-    public PlayerLSH()
+    public Player()
     {
         Name = "";
         level = 1;
         gold = 1000;
     }
-
     
+    public void InitByClass(CharacterClass chClass)
+    {
+        switch (chClass)
+        {
+            case CharacterClass.Warrior:    // 예시. 직업별 초기화를 어떻게 할지는 기획적인 영역으로
+                atk = 5;
+                def = 5;
+                hp = 150;
+                break;
+        }
+    }
+
 }
 
