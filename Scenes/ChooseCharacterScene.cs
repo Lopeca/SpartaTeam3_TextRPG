@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-public enum CSelectState
+public enum CSelectState    //CharacterSelectSceneState 가 전부 담는 표현인데 길어서 줄였습니다
 {
     Default,
     Choose,
@@ -14,45 +14,115 @@ public enum CSelectState
 }
 public class ChooseCharacterScene : SceneBase
 {
-    List<PlayerLSH> characters;
+    List<Player> characters;
     CSelectState sceneState;
 
-    public ChooseCharacterScene()
+    public override void Init()
     {
-        characters = new List<PlayerLSH>();
+        id = "ChooseCharacterScene";
+        characters = new List<Player>();
+        LoadCharacters();
         sceneState = CSelectState.Default;
+        base.Init();
     }
     public override void AddSelections()
     {
-        LoadCharacters();
-
-        selections.Add(new Menu("새 캐릭터 만들기", () => Game.Instance.ChangeScene(new CreateCharacterScene())));
-
-
-        foreach (PlayerLSH character in characters)
+        switch(sceneState)
         {
-            selections.Add(new Menu($"Lv.{character.level} {character.Name} ({ChadStr.GetChadString(character.chad)})", () => DecideCharacter(character)));
-        }
+            case CSelectState.Default:
+                selections.Add(new Menu("캐릭터 선택하기", () => ChangeSceneState(CSelectState.Choose)));
+                selections.Add(new Menu("새 캐릭터 만들기", () => Game.Instance.LoadScene(new CreateCharacterScene())));            
+                selections.Add(new Menu("삭제하기", () => ChangeSceneState(CSelectState.Delete)));
+                break;
+            case CSelectState.Choose:
 
-        
+                foreach (Player character in characters)
+                {
+                    ChangeQuitAction(() => ChangeSceneState(CSelectState.Default));
+                    selections.Add(new Menu(CharacterInfoString(character), () => DecideCharacter(character)));
+                }
+                break;
+            case CSelectState.Delete:
+                foreach (Player character in characters)
+                {
+                    ChangeQuitAction(() => ChangeSceneState(CSelectState.Default));
+                    selections.Add(new Menu(CharacterInfoString(character), () => DeleteCharacter(character)));
+                }
+                break;
+        }          
+    }
+
+    private void ChangeQuitAction(Action action)
+    {
+        if (selections[0] is Menu quitMenu)
+        {
+            quitMenu.menuAction = action;
+        }
     }
 
 
     // 씬에 실제로 출력되는 함수는 여기, SceneBase에서 이 함수 후에 종료 버튼과 입력을 알아서 묻습니다.
     public override void RenderCustomArea()
     {
-        Console.WriteLine("<<캐릭터 선택>>");
-
-        if(characters.Count == 0)
+        switch (sceneState)
         {
-            Console.WriteLine("캐릭터가 없습니다. 생성해주세요.");
+            case CSelectState.Default:
+                RenderSceneDefaultState();
+                break;
+            case CSelectState.Choose:
+                RenderSceneChooseState();
+                break;
+            case CSelectState.Delete:
+                RenderSceneDeleteState();
+                break;
         }
+    }
+
+    private void RenderSceneDeleteState()
+    {
+        Console.WriteLine("--------삭제할 캐릭터를 선택하세요.-------------");
+        GraphicUtility.DrawLine();
         ShowSelections();
-        AskSelection(out ISelectable selected);
-        selected.ActBySelect();
+        GraphicUtility.DrawLine();
+    }
+
+    private void RenderSceneChooseState()
+    {
+        Console.WriteLine("--------플레이할 캐릭터를 선택하세요.-------------");
+        GraphicUtility.DrawLine();
+        ShowSelections();
+        GraphicUtility.DrawLine();
     }
 
     // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들면 됩니다
+    private void RenderSceneDefaultState()
+    {
+        Console.WriteLine("<<캐릭터 선택>>");
+
+        if (characters.Count == 0)
+        {
+            Console.WriteLine("캐릭터가 없습니다. 생성해주세요.");
+        }
+        else
+        {
+            GraphicUtility.DrawLine();
+            foreach (Player character in characters)
+            {
+                Console.WriteLine(CharacterInfoString(character));
+            }
+            GraphicUtility.DrawLine();
+        }
+        ShowSelections();      
+    }
+    private void ChangeSceneState(CSelectState state)
+    {
+        sceneState = state;
+        RefreshSelections();
+        AddSelections();
+        RenderScene();
+    }
+
+
     private void LoadCharacters()
     {
         string[] jsonFiles = [];
@@ -67,7 +137,7 @@ public class ChooseCharacterScene : SceneBase
             try
             {
                 string json = File.ReadAllText(jsonFile);
-                PlayerLSH character = JsonSerializer.Deserialize<PlayerLSH>(json);
+                Player character = JsonSerializer.Deserialize<Player>(json);
 
                 if (character != null)
                 {
@@ -80,9 +150,36 @@ public class ChooseCharacterScene : SceneBase
             }
         }
     }
-    private void DecideCharacter(PlayerLSH character)
+
+    private void DeleteCharacter(Player character)
     {
-        throw new NotImplementedException();
+        string filePath = Path.Combine(Game.Instance.savePath, character.Name + ".json");
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            characters.Clear();
+            LoadCharacters();
+        }
+        else
+        {
+            Console.WriteLine("디버그포인트");
+        }
+
+       ChangeSceneState(CSelectState.Default);
     }
+
+    private void DecideCharacter(Player character)
+    {
+        Game.Instance.player = character;
+        Game.Instance.ChangeScene(new StartScene());
+        
+    }
+
+    private static string CharacterInfoString(Player character)
+    {
+        return $"Lv.{character.Level} {character.Name} ({CharacterClassStr.GetClassString(character.CharacterClass)})";
+    }
+
+
 }
 

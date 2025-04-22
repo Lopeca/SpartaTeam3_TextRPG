@@ -30,7 +30,6 @@ public class Game
     {
         scenes.Push(scene);
         scene.Init();
-        scene.RenderScene();
     }
     
     public void PopScene()
@@ -46,8 +45,13 @@ public class Game
 
     public void CloseScene()
     {
+        //Console.WriteLine("최상위 씬 : " + scenes.Peek() + "|| 길이 : " + scenes.Count);
         scenes.Pop();
-        if(scenes.Count != 0) scenes.Peek().RenderScene();
+        if (scenes.Count != 0)
+        {
+            
+            scenes.Peek().Init();
+        }
     }
 
     public void Save()
