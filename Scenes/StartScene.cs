@@ -34,7 +34,9 @@ public class StartScene : SceneBase
 
     public void LoadBattleScene()
     {
-        Game.Instance.LoadScene(new RG_TEAM_P_TXT_2.Scenes.BattleScene());
+        //Game.Instance.LoadScene(new RG_TEAM_P_TXT_2.Scenes.BattleScene());
+        Game.Instance.LoadScene(new BattleStartScene());//배스타트씬을 호출하기 위해 임시로 만들어 본 코드
+       
         //Console.WriteLine("전투 씬 대신에 출력되는 문장");
     }
 }

@@ -4,78 +4,54 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using RG_TEAM_P_TXT_2;
+using Team3TextRPG;
 
-namespace RG_TEAM_P_TXT_2.Scenes
+namespace Team3TextRPG.Scenes
 {
     public class BattleScene : SceneBase
     {
-        PlayerLSH player => Game.Instance.player;
-        List<Monster> monsters = new List<Monster>();
-        bool monstersGenerated = false; //몬스터가 최초 1회만 생성되게하는 코드의 일부.
+        List<Monster> monsters;
+
+        public BattleScene(List<Monster> monsters)
+        {
+            this.monsters = monsters;
+        }
+
+        PlayerLSH player => Game.Instance.player; //아직은 여기서 임시로 플레이어 정보를 가져옴
 
 
+        void ShowPlayerStatus()
+        {
+            Console.WriteLine("\n[내정보]");
+            PrintPlayerStatus();
+        }
+
+        void PrintPlayerStatus()//이거는 PlayerLSH cs 파일에서 아래의 정보들이 있게끔 조금 수정했습니다.
+        {
+            Console.WriteLine($"Lv. {player.level} {player.Name} ({player.Job})");
+            Console.WriteLine($"HP {player.currenthp} / {player.hp}");
+        }
+        // 기존 GenerateMonsters()는 더 이상 호출하지 않음
+        // Init() 또는 AddSelections()에서 받은 monsters만 사용
         //어떤 선택지가 있는가
         public override void AddSelections()
         { 
             Game.Instance.messageLog = null; //기존의 메세지 초기화(캐릭터 생성됨 문구가 뜨길래요)여기보다 좋은 위치가 있다면 옮기겠습니다
-            MonsterDB.MonsterInit(); //**매우 중요. 몬스터db의 비어있는 상태일 리스트를 작동해서 채우기.
-            GenerateMonsters(); //전투 시작시 몬스터 등장
-                                //실질 선택지는 아래부터
             selections.Clear();//혹시 남아있을지 모르는 다른 구문 치워버리기 
-            selections.Add(new Menu("나가기", () => Game.Instance.LoadScene(new StartScene()))); 
+            selections.Add(new Menu("도망친다", () => Game.Instance.LoadScene(new StartScene()))); 
             selections.Add(new Menu("공격", AttackPhase));
             
         }
 
-        //씬에 실제로 출력되는 함수
+        //씬에 실제로 적용되는 함수
         public override void RenderCustomArea()
         {
-
-        ShowMonsterStatus();
-
+            ShowMonsterStatus();
             ShowPlayerStatus();
-            {
-                Console.WriteLine("\n[내정보]");//이거는 PlayerLSH cs 파일에서 아래의 정보들이 있게끔 조금 수정했습니다.
-                Console.WriteLine($"Lv. {player.level} {player.Name} ({player.Job})");
-                Console.WriteLine($"HP {player.currenthp} / {player.hp}");
-            }
             Console.WriteLine();
             ShowSelections();
         }
-        //몬스터생성
-        void GenerateMonsters()
-        {
-            //monsters.Clear(); // 기존 몬스터 초기화
-
-            if (monstersGenerated)
-                return;
-
-            monstersGenerated = true; // 최초 1회만 발동
-
-            if (MonsterDB.monsterList.Count == 0)
-            {
-                Console.WriteLine("[ERROR] 몬스터 데이터가 비어 있습니다!");
-                Console.ReadLine(); // 잠깐 멈춰서 확인
-                return;
-            }
-
-            Random rand = new Random();
-            int count = rand.Next(1, 5); // 1~4마리
-
-
-            for (int i = 0; i < count; i++)
-            {
-                // MonsterDB에서 랜덤한 몬스터 데이터 하나 선택
-                int index = rand.Next(0, MonsterDB.monsterList.Count);
-                MonsterData data = MonsterDB.monsterList[index];
-
-                // 그 데이터를 바탕으로 Monster 인스턴스 생성
-                Monster monster = new Monster(data);
-
-                monsters.Add(monster);
-            }
-        }
+        
         void AttackPhase()
         {
             Console.Clear();
@@ -94,9 +70,7 @@ namespace RG_TEAM_P_TXT_2.Scenes
             Console.WriteLine($"Lv. {player.level} {player.Name} ({player.chad})");
             Console.WriteLine($"HP {player.hp}");
 
-            Console.WriteLine();
             Console.WriteLine("0. 취소");
-            Console.WriteLine();
             Console.WriteLine("대상을 선택해주세요.");
 
             // 2. 입력 받기
@@ -105,9 +79,9 @@ namespace RG_TEAM_P_TXT_2.Scenes
                 Console.Write(">> ");
                 string input = Console.ReadLine();
 
-                if (!int.TryParse(input, out int index))
+                if (!int.TryParse(input, out int index)) 
                 {
-                    Console.WriteLine("숫자를 입력해주세요.");
+                    Console.WriteLine("잘못된 입력, 숫자를 입력해주세요.");
                     continue;
                 }
 
@@ -133,12 +107,10 @@ namespace RG_TEAM_P_TXT_2.Scenes
 
                 // 3. 공격 처리
                 int baseDamage = player.atk;
-                double variation = baseDamage * 0.1;
+                double variation = baseDamage * 0.1; //실제 공격에는 10%의 피해 증감량이 있음
                 int min = (int)Math.Ceiling(baseDamage - variation);
                 int max = (int)Math.Floor(baseDamage + variation + 1);
-
-                Random rand = new Random();
-                int finalDamage = rand.Next(min, max);
+                int finalDamage = new Random().Next(min, max);
 
                 target.CurrentHP -= finalDamage;
 
@@ -146,11 +118,11 @@ namespace RG_TEAM_P_TXT_2.Scenes
                 Console.WriteLine($"Chad의 공격!");
                 Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 맞췄습니다. [데미지 : {finalDamage}]");
 
-                if (target.IsDead)
+                if (target.IsDead)//타겟이 죽으면 사망처리
                 {
                     Console.WriteLine($"\nLv.{target.Level} {target.Name}\nHP {target.CurrentHP + finalDamage} → Dead");
                 }
-                else
+                else //타겟이 살면 현제 피통 감소량 반영
                 {
                     Console.WriteLine($"\nLv.{target.Level} {target.Name}\nHP {target.CurrentHP + finalDamage} → {target.CurrentHP}");
                 }
@@ -162,11 +134,11 @@ namespace RG_TEAM_P_TXT_2.Scenes
                 break;
             }
 
-            EnemyPhase();
+            EnemyPhase(); //상대 턴으로 넘어가기
 
 
         }
-        void EnemyPhase()
+        void EnemyPhase() //몬스터의 공격
         {
             Console.Clear();
             Console.WriteLine("Enemy Phase\n");
@@ -182,13 +154,13 @@ namespace RG_TEAM_P_TXT_2.Scenes
                 Console.WriteLine($"{player.Name}을(를) 맞췄습니다. [데미지 : {damage}]");
                 Console.WriteLine($"현재 HP : {player.hp}\n");
 
-                if (player.hp <= 0)
+                if (player.hp <= 0) //플레이어의 체력이 0이하로 내려갔는지 아닌지 체크
                 {
-                    player.hp = 0;
-                    break;
+                    player.hp = 0; // 플레이어 체력을 수치적으로 0으로 고정
+                    break; //즉시 전투 루프종료. 그러면 패배페이즈로.
                 }
 
-                Console.WriteLine("0. 다음");
+                Console.WriteLine("0. 다음"); //살았으면 전투 속행
                 Console.ReadLine();
             }
 
@@ -198,28 +170,28 @@ namespace RG_TEAM_P_TXT_2.Scenes
                 if (player.hp <= 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("You Lose!");
+                    Console.WriteLine("당신은 차디찬 던전에서 삶을 마감했다!");
                     Console.ReadLine();
-                    Game.Instance.LoadScene(new StartScene());
+                    Game.Instance.LoadScene(new StartScene()); //처음으로 돌아갑니다. 사실상 재시작이나 다름없습니다
                     return;
                 }
 
-                bool allDead = true;
+                bool allDead = true; //모든 몬스터를 죽였는지 살펴 보기
                 foreach (var m in monsters)
                 {
                     if (!m.IsDead)
                     {
-                        allDead = false;
+                        allDead = false; //하나라도 살아있으면 몬스터 '올 데드'는 거짓입니다
                         break;
                     }
                 }
 
-                if (allDead)
+                if (allDead) //몬스터를 모두 죽였으면 발생
                 {
                     Console.Clear();
-                    Console.WriteLine("Victory!");
+                    Console.WriteLine("전투 승리!");
                     Console.ReadLine();
-                    Game.Instance.LoadScene(new StartScene());
+                    Game.Instance.LoadScene(new StartScene()); //처음으로 돌아갑니다. 깎인 체력은 유지됩니다!!!
                     return;
                 }
                 selections.Clear();
@@ -243,7 +215,7 @@ namespace RG_TEAM_P_TXT_2.Scenes
 
 
        
-        void ShowPlayerStatus() { }
+        //void ShowPlayerStatus() { }
         //void AttackPhase() {  }
         //
         //void EnemyPhase() {  }

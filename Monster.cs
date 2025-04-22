@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RG_TEAM_P_TXT_2
+namespace Team3TextRPG
 {
     public class Monster
     {
