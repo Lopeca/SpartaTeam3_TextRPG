@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class BattleStart : SceneBase
+public class BattleStartScene : SceneBase
 {
     public override void AddSelections()
     {
