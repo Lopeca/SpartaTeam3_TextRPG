@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class MonsterDB
+public static class MonsterDB
 {
     public static List<MonsterData> monsterList = new List<MonsterData>();
     public static void MonsterInit()
@@ -24,27 +24,27 @@ public class MonsterDB
 public struct MonsterData
 {
 	// 몬스터 옵션 선언
-	public int monsterID;
-	public int monsterLv;
-	public string monsterName;
-	public int monsterHp;
-	public int monsterAtk;
-	public int monsterDef;
-	public int monsterDropGold;
-	public int monsterExp;
+	public int id;
+	public int level;
+	public string name;
+	public int hp;
+	public int atk;
+	public int def;
+	public int dropGold;
+	public int exp;
 	// 몬스터 타입 추후 예정
 
 	// 몬스터 생성자
 	public MonsterData(int monsterID, int monsterLv, string monsterName, int monsterHp, 
 					   int monsterAtk, int monsterDef, int monsterDropGold, int monsterExp)
 	{
-		this.monsterID = monsterID;
-		this.monsterLv = monsterLv;
-		this.monsterName = monsterName;
-		this.monsterHp = monsterHp;
-		this.monsterAtk = monsterAtk;
-		this.monsterDef = monsterDef;
-		this.monsterDropGold = monsterDropGold;
-		this.monsterExp = monsterExp;
+		this.id = monsterID;
+		this.level = monsterLv;
+		this.name = monsterName;
+		this.hp = monsterHp;
+		this.atk = monsterAtk;
+		this.def = monsterDef;
+		this.dropGold = monsterDropGold;
+		this.exp = monsterExp;
     }
 }

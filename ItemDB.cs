@@ -1,6 +1,6 @@
 ﻿using System;
 
-enum ItemType
+public enum ItemType
 {
     Weapon,
     Armor
@@ -38,7 +38,7 @@ public struct EquipDB
 
     // 장비 생성자
     public EquipDB(int itemID, ItemType itemType, string itemName, 
-        int itemAtk, int itemDef, int itemDesc, int itemValue)
+        int itemAtk, int itemDef, string itemDesc, int itemValue)
     {
         this.itemID = itemID;
         this.itemType = itemType;
