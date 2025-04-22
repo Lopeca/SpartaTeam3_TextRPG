@@ -19,6 +19,7 @@ public class ChooseCharacterScene : SceneBase
 
     public ChooseCharacterScene()
     {
+        characters = new List<PlayerLSH>();
         sceneState = CSelectState.Default;
     }
     public override void AddSelections()
@@ -42,6 +43,10 @@ public class ChooseCharacterScene : SceneBase
     {
         Console.WriteLine("<<캐릭터 선택>>");
 
+        if(characters.Count == 0)
+        {
+            Console.WriteLine("캐릭터가 없습니다. 생성해주세요.");
+        }
         ShowSelections();
         AskSelection(out ISelectable selected);
         selected.ActBySelect();
@@ -50,17 +55,13 @@ public class ChooseCharacterScene : SceneBase
     // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들면 됩니다
     private void LoadCharacters()
     {
-        characters = new List<PlayerLSH>();
-
         string[] jsonFiles = [];
+
         if (Directory.Exists(Game.Instance.savePath))
         {
             jsonFiles = Directory.GetFiles(Game.Instance.savePath, "*.json");
         }
-        else
-        {
-            Console.WriteLine("캐릭터가 없습니다. 생성해주세요.");
-        }
+
         foreach (string jsonFile in jsonFiles)
         {
             try
