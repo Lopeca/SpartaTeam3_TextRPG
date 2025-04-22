@@ -22,7 +22,7 @@ public class Game
 
     internal void Play()
     {
-        LoadScene(new CreateCharacterScene());
+        LoadScene(new StartScene());
     }
 
     public void LoadScene(SceneBase scene)
