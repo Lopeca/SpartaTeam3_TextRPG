@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 public static class CharacterClassStr
 {
-    public static readonly Dictionary<Chad, string> Map = new()
+    public static readonly Dictionary<CharacterClass, string> Map = new()
     {
-        {Chad.Warrior, "전사" },
-        { Chad.Mage, "마법사" },
-        { Chad.Archer, "궁수" },
-        { Chad.Assassin, "도적" }
+        {CharacterClass.Warrior, "전사" },
+        { CharacterClass.Mage, "마법사" },
+        { CharacterClass.Archer, "궁수" },
+        { CharacterClass.Assassin, "도적" }
     };
 
-    public static string GetChadString(Chad chad)   // ChadStr.GetChadString(Chad chad)로 직업으로부터 문자열 얻을 수 있음
+    public static string GetClassString(CharacterClass cClass)   // ChadStr.GetChadString(Chad chad)로 직업으로부터 문자열 얻을 수 있음
     {
-        Map.TryGetValue(chad, out var result);
+        Map.TryGetValue(cClass, out var result);
         return result;
     }
 }
@@ -28,35 +28,42 @@ public enum CharacterClass
     Archer,
     Assassin
 }
+
+[Serializable]
 public class Player
 {
     public string Name { get; set; }
 
-    public int level;
-    public CharacterClass characterClass;
-    public int atk;
-    public int def;
-    public int hp;
-    public int gold;
+    public int Level { get; set; }
+    public CharacterClass CharacterClass { get; set; }
+    public int Atk { get; set; }
+    public int Def { get; set; }
+    public int Hp { get; set; }
+    public int Gold { get; set; }
 
     public Player()
     {
         Name = "";
-        level = 1;
-        gold = 1000;
+        Level = 1;
+        Gold = 1000;
     }
-    
+
     public void InitByClass(CharacterClass chClass)
     {
+        CharacterClass = chClass;
         switch (chClass)
         {
-            case CharacterClass.Warrior:    // 예시. 직업별 초기화를 어떻게 할지는 기획적인 영역으로
-                atk = 5;
-                def = 5;
-                hp = 150;
+            case CharacterClass.Warrior:
+                Atk = 5;
+                Def = 5;
+                Hp = 150;
+                break;
+            default:
+                Atk = 3;
+                Def = 3;
+                Hp = 100;
                 break;
         }
     }
-
 }
 
