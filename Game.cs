@@ -10,7 +10,7 @@ public class Game
     public static Game Instance;
 
     public Stack<SceneBase> scenes;
-    public PlayerLSH player;
+    public Player player;
     public string? messageLog = null;
 
     public string savePath = "SaveData";

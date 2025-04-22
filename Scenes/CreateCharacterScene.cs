@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 public class CreateCharacterScene : SceneBase
 {
-    PlayerLSH player;
+    Player player;
 
     public override void AddSelections()
     {
-        player = new PlayerLSH();
-        selections.Add(new ChadSelectMenu("전사", player, Chad.Warrior));
-        selections.Add(new ChadSelectMenu("마법사", player, Chad.Warrior));
-        selections.Add(new ChadSelectMenu("궁수", player, Chad.Warrior));
-        selections.Add(new ChadSelectMenu("도적", player, Chad.Warrior));        
+        player = new Player();
+        selections.Add(new ClassSelectMenu("전사", player, CharacterClass.Warrior));
+        selections.Add(new ClassSelectMenu("마법사", player, CharacterClass.Mage));
+        selections.Add(new ClassSelectMenu("궁수", player, CharacterClass.Archer));
+        selections.Add(new ClassSelectMenu("도적", player, CharacterClass.Assassin));        
     }
 
     // 씬에 실제로 출력되는 함수는 여기, SceneBase에서 이 함수 후에 종료 버튼과 입력을 알아서 묻습니다.

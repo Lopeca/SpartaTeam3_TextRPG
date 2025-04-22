@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-internal class ChadSelectMenu : ISelectable
+internal class ClassSelectMenu : ISelectable
 {
-    PlayerLSH player;
-    Chad chad;
+    Player player;
+    CharacterClass characterClass;
     public string Name { get; private set; }
-    public ChadSelectMenu(string name, PlayerLSH player, Chad chad)
+    public ClassSelectMenu(string name, Player player, CharacterClass characterClass)
     {
         Name = name;
         this.player = player;
-        this.chad = chad;
+        this.characterClass = characterClass;
     }
 
     public void ActBySelect()
     {
-        player.chad = chad;
+        player.characterClass = characterClass;
         Game.Instance.player = player;
         Game.Instance.scenes.Clear();
 
