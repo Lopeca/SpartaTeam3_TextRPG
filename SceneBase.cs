@@ -25,9 +25,13 @@ public abstract class SceneBase
     public abstract void AddSelections();
 
 
-    public void RenderScene()
+    public virtual void RenderScene()
     {
         Console.Clear();
+        if(Game.Instance.messageLog != null)
+        {
+            Console.WriteLine(Game.Instance.messageLog + "\n");
+        }
         RenderCustomArea();
         ShowQuitMenu();
         AskSelection(out ISelectable selected);
