@@ -9,6 +9,7 @@ public class StartScene : SceneBase
     public override void AddSelections()
     {
         selections.Add(new Menu("상태 보기", LoadStatusScene));
+        selections.Add(new Menu("전투 시작", () => Game.Instance.LoadScene(new BattleStartScene())));
 
     }
 
@@ -29,11 +30,6 @@ public class StartScene : SceneBase
         // 상태 보기씬 만들어서 Game.Instance.LoadScene(new 만든 씬); 하면 됩니다
         // 그 외 커스텀 씬 만들 때 이런 느낌인 점 참고
         Console.WriteLine("상태 보기 대신에 출력되는 문장");
-    }
-
-    public void LoadBattleScene()
-    {
-        Console.WriteLine("전투 씬 대신에 출력되는 문장");
     }
 }
 
