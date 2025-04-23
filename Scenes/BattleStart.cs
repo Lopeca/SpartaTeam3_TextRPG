@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 public class BattleStartScene : SceneBase
 {
+
+    public static int CurrentFloor = 1; // 현재 층
     List<MonsterData> selectedMonsters = new List<MonsterData>();//류건)위치를 RenderCustomArea()에서 밖으로 뺐습니다. 이 씬에서 생성된 몹 정보를 배틀씬에서 받아가기 위해
     public override void AddSelections() //류건)배틀씬으로 가기 위한 코드들을 넣었습니다
     {
@@ -37,16 +39,17 @@ public class BattleStartScene : SceneBase
     public override void RenderCustomArea()
     {
         MonsterDB.MonsterInit();
-        Console.WriteLine("Battle Start!!\n");
+        Console.WriteLine($"현재 {CurrentFloor}층");
+        Console.WriteLine("몬스터가 나타났다!\n");
         Random random = new Random();
-        int monsterCount = random.Next(1, 5);
+        int monsterCount = random.Next(1, 4+CurrentFloor);
         selectedMonsters.Clear(); // 류건)'배틀 스타트 씬'이 열릴때마다 몬스터를 매번 새로 생성
         //List<MonsterData> selectedMonsters = new List<MonsterData>(); 류건)맨 위로 빼갔습니다.이건 변경사항 착오 없으시기 위해 잔흔으로 주석화했습니다.
 
 
         for (int i = 0; i < monsterCount; i++) //몬스터 선택
         {
-            int randomIndex = random.Next(0, MonsterDB.monsterList.Count);
+            int randomIndex = random.Next((CurrentFloor-1), MonsterDB.monsterList.Count);
 
             selectedMonsters.Add(MonsterDB.monsterList[randomIndex]);
         }
