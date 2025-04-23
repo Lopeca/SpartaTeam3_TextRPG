@@ -14,6 +14,7 @@ public static class GraphicUtility
         Console.WriteLine();
     }
 
+    // 문장을 쓰면 한 글자마다 색이 바뀌는 요란한 연출입니다. 캔버스씬을 로드하면 확인할 수 있어요
     public static void WriteRainbowText(string text)
     {
         char[] chars = text.ToCharArray();
@@ -47,6 +48,7 @@ public static class GraphicUtility
         Console.ResetColor();
     }
 
+    // 참조를 타고 넘어가서 어떤식으로 쓰이는지 직접 보는 것이 사용하기 좋을 것 같습니다.
     internal static void DrawByStringList(List<string> stringList, ConsoleColor color, int startX, int startY)
     {
         Console.ForegroundColor = color;
@@ -70,7 +72,7 @@ public static class GraphicUtility
             {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
                 {
-                    if (x % 2 == 0)
+                    if (x % 2 == 0) // 2칸을 쓰는 문자를 위한 조건문입니다. 다른 방식이 필요하다면 함수를 복사해서 이부분 바꾸거나 이 함수를 커스텀해주세요
                     {
                         Console.SetCursorPosition(x, y);
                         Console.Write(c);
