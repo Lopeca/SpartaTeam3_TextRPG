@@ -10,9 +10,10 @@ public class Game
     public static Game Instance;
 
     public Stack<SceneBase> scenes;
-    public PlayerLSH player;
+    public Player player;
     public string? messageLog = null;
 
+    public string savePath = "SaveData";
     // 플레이어 정보 여기 들어가야함
     public Game()
     {
@@ -22,19 +23,49 @@ public class Game
 
     internal void Play()
     {
-        LoadScene(new StartScene());
+
+        LoadScene(new IntroScene());
+
     }
 
     public void LoadScene(SceneBase scene)
     {
         scenes.Push(scene);
-        scene.RenderScene();
+        scene.Init();
+    }
+    
+    public void PopScene()
+    {
+        scenes.Pop();
+    }
+
+    public void ChangeScene(SceneBase scene)
+    {
+        PopScene();
+        LoadScene(scene);
     }
 
     public void CloseScene()
     {
+        //Console.WriteLine("최상위 씬 : " + scenes.Peek() + "|| 길이 : " + scenes.Count);
         scenes.Pop();
-        if(scenes.Count != 0) scenes.Peek().RenderScene();
+        if (scenes.Count != 0)
+        {
+            
+            scenes.Peek().Init();
+        }
+    }
+
+    public void Save()
+    {
+        if (!Directory.Exists(savePath))
+        {
+            Directory.CreateDirectory(savePath);
+        }
+
+        string filename = player.Name + ".json";
+
+
     }
 }
 

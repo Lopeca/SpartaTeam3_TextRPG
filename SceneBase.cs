@@ -7,19 +7,18 @@ using System.Threading.Tasks;
 
 public abstract class SceneBase
 {
+    public string id;
     public List<ISelectable> selections;
-
+    
     public SceneBase()
     {
         selections = new List<ISelectable>();
-        Init();
     }
-
-    public void Init()
+    public virtual void Init()
     {
-        selections.Add(new Menu("나가기", Game.Instance.CloseScene));
-
+        RefreshSelections();
         AddSelections();
+        RenderScene();
     }
 
     public abstract void AddSelections();
@@ -31,6 +30,7 @@ public abstract class SceneBase
         if(Game.Instance.messageLog != null)
         {
             Console.WriteLine(Game.Instance.messageLog + "\n");
+            Game.Instance.messageLog = null;
         }
         RenderCustomArea();
         ShowQuitMenu();
@@ -44,8 +44,6 @@ public abstract class SceneBase
     public void ShowSelections()
     {
 
-        Console.WriteLine();
-
         for (int i = 1; i < selections.Count; i++)
         {
             Console.WriteLine($"{i}. {selections[i].Name}");
@@ -56,7 +54,7 @@ public abstract class SceneBase
     }
     public void ShowQuitMenu()
     {
-        Console.WriteLine($"\n{0}. {selections[0].Name}\n");
+        Console.WriteLine($"{0}. {selections[0].Name}\n");
     }
 
     // 입력 받는 함수
@@ -95,5 +93,11 @@ public abstract class SceneBase
             break;
         }
 
+    }
+
+    public void RefreshSelections()
+    {
+        selections.Clear();
+        selections.Add(new Menu("나가기", Game.Instance.CloseScene));
     }
 }
