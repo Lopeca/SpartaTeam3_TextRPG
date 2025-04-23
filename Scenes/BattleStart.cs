@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Team3TextRPG.Scenes;
+using Team3TextRPG;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +8,24 @@ using System.Threading.Tasks;
 
 public class BattleStartScene : SceneBase
 {
-    public override void AddSelections()
+    List<MonsterData> selectedMonsters = new List<MonsterData>();//류건)위치를 RenderCustomArea()에서 밖으로 뺐습니다. 배틀씬에서 생성된 몹 정보를 받아가기 위해
+    public override void AddSelections() //류건)배틀씬으로 가기 위한 코드들을 넣었습니다
     {
+        selections.Clear();
+        selections.Add(new Menu("전투 시작", () =>
+        {
+            // MonsterData → Monster 로 변환해서 BattleScene에 넘김
+            List<Monster> monsters = selectedMonsters
+                .Select(md => new Monster(md))
+                .ToList();
 
+            Game.Instance.LoadScene(new BattleScene(monsters));
+        }));
+
+        selections.Add(new Menu("나가기", () =>
+        {
+            Game.Instance.LoadScene(new StartScene());
+        }));
         /*selections.Add(new Menu("공격", LoadBattleAttackScene));*/ // 공격 씬 호출
     }
 
@@ -19,7 +36,8 @@ public class BattleStartScene : SceneBase
         Console.WriteLine("Battle Start!!\n");
         Random random = new Random();
         int monsterCount = random.Next(1, 5);
-        List<MonsterData> selectedMonsters = new List<MonsterData>();
+        selectedMonsters.Clear(); // 류건)'배틀 스타트 씬'이 열릴때마다 몬스터를 매번 새로 생성
+        //List<MonsterData> selectedMonsters = new List<MonsterData>(); 류건)맨 위로 빼갔습니다.이건 변경사항 착오 없으시기 위해 잔흔으로 주석화했습니다.
 
 
         for (int i = 0; i < monsterCount; i++) //몬스터 선택
