@@ -38,7 +38,12 @@ namespace Team3TextRPG.Scenes
         { 
             Game.Instance.messageLog = null; //기존의 메세지 초기화(캐릭터 생성됨 문구가 뜨길래요)여기보다 좋은 위치가 있다면 옮기겠습니다
             selections.Clear();//혹시 남아있을지 모르는 다른 구문 치워버리기 
-            selections.Add(new Menu("도망친다", () => Game.Instance.LoadScene(new StartScene()))); 
+            selections.Add(new Menu("도망친다", () =>
+            {
+                Game.Instance.ResetToStart();
+                //Game.Instance.ChangeScene(new StartScene());
+            }));
+            //배틀 스타트씬으로 돌아가는 것마저 스킵하면서(실제론 거쳐가는 느낌) 시작화면으로 돌아가기 위한 수정
             selections.Add(new Menu("공격", AttackPhase));
             
         }
@@ -69,6 +74,7 @@ namespace Team3TextRPG.Scenes
             Console.WriteLine("[내정보]");
             Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
             Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
+            Console.WriteLine();
 
             Console.WriteLine("0. 취소");
             Console.WriteLine("대상을 선택해주세요.");

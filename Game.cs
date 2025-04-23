@@ -56,6 +56,13 @@ public class Game
         }
     }
 
+    //배틀씬이 이중이라서 뭔가 해도해도 힘들어서 일단 이걸로 될까해서 넣어봤습니다
+    public void ResetToStart()
+    {
+        scenes.Clear(); // 씬 스택 전체 초기화
+        LoadScene(new StartScene()); // 시작씬 하나만 다시 올림
+    }
+
     public void Save()
     {
         if (!Directory.Exists(savePath))
