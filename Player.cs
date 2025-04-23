@@ -45,6 +45,8 @@ public class Player
     public int CurrentHp { get; set; }
     public int Gold { get; set; }
 
+    public int Exp { get; set; }
+
     public List<int> ItemId { get; set; }
 
     // bonusHP는 나중에 아이템 추가 제거할 때 실시간 계산해서 넣을 변수입니다
