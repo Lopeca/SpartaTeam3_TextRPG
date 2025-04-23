@@ -44,8 +44,6 @@ public abstract class SceneBase
     public void ShowSelections()
     {
 
-        Console.WriteLine();
-
         for (int i = 1; i < selections.Count; i++)
         {
             Console.WriteLine($"{i}. {selections[i].Name}");
@@ -56,7 +54,7 @@ public abstract class SceneBase
     }
     public void ShowQuitMenu()
     {
-        Console.WriteLine($"\n{0}. {selections[0].Name}\n");
+        Console.WriteLine($"{0}. {selections[0].Name}\n");
     }
 
     // 입력 받는 함수
