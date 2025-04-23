@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class BattleStartScene : SceneBase
+public class BattleStart : SceneBase
 {
 
     public static int CurrentFloor = 1; // 현재 층
