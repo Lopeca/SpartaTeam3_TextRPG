@@ -35,17 +35,16 @@ public class ChooseCharacterScene : SceneBase
                 selections.Add(new Menu("삭제하기", () => ChangeSceneState(CSelectState.Delete)));
                 break;
             case CSelectState.Choose:
-
+                ChangeQuitAction(() => ChangeSceneState(CSelectState.Default));
                 foreach (Player character in characters)
-                {
-                    ChangeQuitAction(() => ChangeSceneState(CSelectState.Default));
+                {                    
                     selections.Add(new Menu(CharacterInfoString(character), () => DecideCharacter(character)));
                 }
                 break;
             case CSelectState.Delete:
+                ChangeQuitAction(() => ChangeSceneState(CSelectState.Default));
                 foreach (Player character in characters)
-                {
-                    ChangeQuitAction(() => ChangeSceneState(CSelectState.Default));
+                {                    
                     selections.Add(new Menu(CharacterInfoString(character), () => DeleteCharacter(character)));
                 }
                 break;
@@ -121,8 +120,6 @@ public class ChooseCharacterScene : SceneBase
         AddSelections();
         RenderScene();
     }
-
-
     private void LoadCharacters()
     {
         string[] jsonFiles = [];

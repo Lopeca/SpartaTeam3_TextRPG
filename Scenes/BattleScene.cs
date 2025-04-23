@@ -17,7 +17,7 @@ namespace Team3TextRPG.Scenes
             this.monsters = monsters;
         }
 
-        PlayerLSH player => Game.Instance.player; //아직은 여기서 임시로 플레이어 정보를 가져옴
+        Player player => Game.Instance.player; //아직은 여기서 임시로 플레이어 정보를 가져옴
 
 
         void ShowPlayerStatus()
@@ -28,8 +28,8 @@ namespace Team3TextRPG.Scenes
 
         void PrintPlayerStatus()//이거는 PlayerLSH cs 파일에서 아래의 정보들이 있게끔 조금 수정했습니다.
         {
-            Console.WriteLine($"Lv. {player.level} {player.Name} ({player.Job})");
-            Console.WriteLine($"HP {player.currenthp} / {player.hp}");
+            Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
+            Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
         }
         // 기존 GenerateMonsters()는 더 이상 호출하지 않음
         // Init() 또는 AddSelections()에서 받은 monsters만 사용
@@ -67,8 +67,8 @@ namespace Team3TextRPG.Scenes
 
             Console.WriteLine();
             Console.WriteLine("[내정보]");
-            Console.WriteLine($"Lv. {player.level} {player.Name} ({player.chad})");
-            Console.WriteLine($"HP {player.hp}");
+            Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
+            Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
 
             Console.WriteLine("0. 취소");
             Console.WriteLine("대상을 선택해주세요.");
@@ -106,7 +106,7 @@ namespace Team3TextRPG.Scenes
                 }
 
                 // 3. 공격 처리
-                int baseDamage = player.atk;
+                int baseDamage = player.Atk;
                 double variation = baseDamage * 0.1; //실제 공격에는 10%의 피해 증감량이 있음
                 int min = (int)Math.Ceiling(baseDamage - variation);
                 int max = (int)Math.Floor(baseDamage + variation + 1);
@@ -148,15 +148,15 @@ namespace Team3TextRPG.Scenes
                 if (monster.IsDead) continue;
 
                 int damage = monster.Level * 2;
-                player.hp -= damage;
+                player.CurrentHp -= damage;
 
                 Console.WriteLine($"Lv.{monster.Level} {monster.Name}의 공격!");
                 Console.WriteLine($"{player.Name}을(를) 맞췄습니다. [데미지 : {damage}]");
-                Console.WriteLine($"현재 HP : {player.hp}\n");
+                Console.WriteLine($"현재 HP : {player.CurrentHp}\n");
 
-                if (player.hp <= 0) //플레이어의 체력이 0이하로 내려갔는지 아닌지 체크
+                if (player.CurrentHp <= 0) //플레이어의 체력이 0이하로 내려갔는지 아닌지 체크
                 {
-                    player.hp = 0; // 플레이어 체력을 수치적으로 0으로 고정
+                    player.CurrentHp = 0; // 플레이어 체력을 수치적으로 0으로 고정
                     break; //즉시 전투 루프종료. 그러면 패배페이즈로.
                 }
 
@@ -167,7 +167,7 @@ namespace Team3TextRPG.Scenes
             CheckGameEnd();
             // 승패가 결정되지 않았다면 → 다음 턴: 다시 플레이어의 선택 유도
             {
-                if (player.hp <= 0)
+                if (player.CurrentHp <= 0)
                 {
                     Console.Clear();
                     Console.WriteLine("당신은 차디찬 던전에서 삶을 마감했다!");
