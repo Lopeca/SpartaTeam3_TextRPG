@@ -5,11 +5,12 @@ public enum ItemType
     Weapon,
     Armor
 }
+
 public static class ItemDB
 {
     public static List<EquipDB> equipList = new List<EquipDB>();
 
-    public static void EquipInit()
+    static ItemDB()
     {
         // 장비아이템 등록
         equipList.Add(new EquipDB(1, ItemType.Weapon, "목검", 10, 0, "나무로 만든 검이다.\n금방이라도 부서질 것같다.", 100));

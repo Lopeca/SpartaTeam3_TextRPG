@@ -49,13 +49,16 @@ public class Player
 
     public int Exp { get; set; }
 
-    public List<int> ItemId { get; set; }
+    public List<int> EquippedList { get; set; }
+    public List<int> Inventory { get; set; }
 
     // bonusHP는 나중에 아이템 추가 제거할 때 실시간 계산해서 넣을 변수입니다
     // 최대 체력 계산할 때마다 위의 아이템 리스트에서 꺼내오는 방법도 있지만 매번 연산해야할 게 많아지니까
     // 체력 옵션 붙은 아이템 추가/제거할 때나 처음 게임 로드할 때 실시간으로 계산해서 들고 있을 일종의 캐싱 목적 변수입니다
     private int bonusHP;
     private int bonusMP;
+    private int bonusAtk;
+    private int bonusDef;
 
     public int MaxHP => BaseHp + bonusHP;
     public Player()
@@ -63,7 +66,7 @@ public class Player
         Name = "";
         Level = 1;
         Gold = 1000;
-        ItemId = [];
+        Inventory = [];
     }
 
     public void InitByClass(CharacterClass chClass)
@@ -72,18 +75,46 @@ public class Player
         switch (chClass)
         {
             case CharacterClass.Warrior:
-                Atk = 5;
-                Def = 5;
+                Atk = 12;
+                Def = 8;
                 BaseHp = 150;
-                CurrentHp = BaseHp;
+                BaseMp = 50;
+                break;
+            case CharacterClass.Mage:
+                Atk = 5;
+                Def = 3;
+                BaseHp = 100;
+                BaseMp = 400;
+                break;
+            case CharacterClass.Archer:
+                Atk = 8;
+                Def = 5;
+                BaseHp = 120;
+                BaseMp = 200;
+                break;
+            case CharacterClass.Assassin:
+                Atk = 9;
+                Def = 4;
+                BaseHp = 125;
+                BaseMp = 250;
                 break;
             default:
                 Atk = 3;
                 Def = 3;
                 BaseHp = 100;
-                CurrentHp = BaseHp;
+                BaseMp = 0;
                 break;
         }
+
+        CurrentHp = BaseHp;
+        CurrentMp = BaseMp;
+    }
+    public void EquipItem(int itemId)
+    {
+        int id = Inventory.Find(id => id == itemId);
+
+        Inventory.Remove(id);
+        EquippedList.Add(id);
     }
 }
 
