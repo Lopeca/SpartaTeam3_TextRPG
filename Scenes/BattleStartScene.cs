@@ -5,10 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 public class BattleStartScene : SceneBase
 {
-    List<MonsterData> selectedMonsters = new List<MonsterData>();//류건)위치를 RenderCustomArea()에서 밖으로 뺐습니다. 배틀씬에서 생성된 몹 정보를 받아가기 위해
+    Player player => Game.Instance.player;
+    public static int CurrentFloor = 1; // 현재 층
+    List<MonsterData> selectedMonsters = new List<MonsterData>();//류건)위치를 RenderCustomArea()에서 밖으로 뺐습니다. 이 씬에서 생성된 몹 정보를 배틀씬에서 받아가기 위해
     public override void AddSelections() //류건)배틀씬으로 가기 위한 코드들을 넣었습니다
     {
         selections.Clear();
@@ -19,13 +22,17 @@ public class BattleStartScene : SceneBase
                 .Select(md => new Monster(md))
                 .ToList();
 
-            Game.Instance.LoadScene(new BattleScene(monsters));
+            Game.Instance.ChangeScene(new BattleScene(monsters));
         }));
 
         selections.Add(new Menu("나가기", () =>
+        
         {
-            Game.Instance.LoadScene(new StartScene());
-        }));
+        Game.Instance.CloseScene(); //혹시 이러면 해결? => 해보니까 해결 된듯.
+        //Game.Instance.LoadScene(new StartScene()); //도르마무 문제가 있던 23일 오전 11시까지 썼던 거. 혹시 몰라 봉인
+    }));
+        
+        
         /*selections.Add(new Menu("공격", LoadBattleAttackScene));*/ // 공격 씬 호출
     }
 
@@ -33,16 +40,17 @@ public class BattleStartScene : SceneBase
     public override void RenderCustomArea()
     {
         MonsterDB.MonsterInit();
-        Console.WriteLine("Battle Start!!\n");
+        Console.WriteLine($"현재 {CurrentFloor}층");
+        Console.WriteLine("몬스터가 나타났다!\n");
         Random random = new Random();
-        int monsterCount = random.Next(1, 5);
+        int monsterCount = random.Next(1, 4+CurrentFloor);
         selectedMonsters.Clear(); // 류건)'배틀 스타트 씬'이 열릴때마다 몬스터를 매번 새로 생성
         //List<MonsterData> selectedMonsters = new List<MonsterData>(); 류건)맨 위로 빼갔습니다.이건 변경사항 착오 없으시기 위해 잔흔으로 주석화했습니다.
 
 
         for (int i = 0; i < monsterCount; i++) //몬스터 선택
         {
-            int randomIndex = random.Next(0, MonsterDB.monsterList.Count);
+            int randomIndex = random.Next((CurrentFloor-1), MonsterDB.monsterList.Count);
 
             selectedMonsters.Add(MonsterDB.monsterList[randomIndex]);
         }
@@ -57,27 +65,10 @@ public class BattleStartScene : SceneBase
         Console.WriteLine();
 
         ////내정보 출력 (레벨,이름,직업, 체력)
-        //Console.WriteLine("[내정보]");
-        //Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.playerClass}");
-        //Console.WriteLine($"{player.playerHp}/{player.playerMaxhp}");
-            
+        Console.WriteLine("[내정보]");
+        Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
+        Console.WriteLine($"HP {player.CurrentHp} ");
         ShowSelections();
-    }
-
-    // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들 됩니다
-
-
-        // 이건 예시, 상태 보기 씬을 만들 때
-    public void LoadStatusScene()
-    {
-        // 상태 보기씬 만들어서 Game.Instance.LoadScene(new 만든 씬); 하면 됩니다
-        // 그 외 커스텀 씬 만들 때 이런 느낌인 점 참고
-        Console.WriteLine("상태 보기 대신에 출력되는 문장");
-    }
-
-    public void LoadBattleScene()
-    {
-        Console.WriteLine("전투 씬 대신에 출력되는 문장");
     }
 }
 

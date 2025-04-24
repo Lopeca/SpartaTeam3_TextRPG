@@ -7,8 +7,10 @@ using System.Xml.Linq;
 
 public class StartScene : SceneBase
 {
+    
     public override void AddSelections()
     {
+        Console.WriteLine($"현재 {BattleStartScene.CurrentFloor}층");
         selections.Add(new Menu("상태 보기", LoadStatusScene));
         selections.Add(new Menu("전투 시작", () => Game.Instance.LoadScene(new BattleStartScene())));
         selections.Add(new Menu("저장하기", () => Save()));
