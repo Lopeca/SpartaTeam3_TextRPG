@@ -14,6 +14,12 @@ public static class GraphicUtility
         Console.WriteLine();
     }
 
+    public static void WriteColor(string str, ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+        Console.Write(str);
+        Console.ResetColor();
+    }
     // 문장을 쓰면 한 글자마다 색이 바뀌는 요란한 연출입니다. 캔버스씬을 로드하면 확인할 수 있어요
     public static void WriteRainbowText(string text)
     {

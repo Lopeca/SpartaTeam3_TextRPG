@@ -13,6 +13,7 @@ public class BattleVictory : SceneBase
     private int totalExp = 0;
     private int totalGold = 0;
     Player player => Game.Instance.player;
+    bool gotLevelUp = false;
 
     public BattleVictory(List<Monster> monsters)
     {
@@ -40,14 +41,15 @@ public class BattleVictory : SceneBase
                 totalGold += monster.DropGold;
             }
         }
-
     }
 
     private void ApplyRewards()
     {
-        player.Exp += totalExp;
+        int prevLevel = player.Level;
+        player.GainExp(totalExp);
+        if(prevLevel != player.Level) gotLevelUp = true;
         player.Gold += totalGold;
-
+        Game.Instance.Save();
     }
 
 
@@ -66,7 +68,10 @@ public class BattleVictory : SceneBase
         Console.WriteLine("몬스터를 처치하여 보상을 획득했습니다.");
         Console.WriteLine();
         Console.WriteLine("[획득한 보상]");
-        Console.WriteLine($"경험치: {totalExp}");
+        Console.Write($"획득한 경험치:{totalExp}");
+        if (gotLevelUp) GraphicUtility.WriteColor("  레벨 업!", ConsoleColor.Yellow);
+        Console.WriteLine();
+        Console.WriteLine($"현재 경험치 : {player.Exp} / {player.GetRequiredExp()} (현재 레벨 : {player.Level})");
         Console.WriteLine($"골드: {totalGold}G");
         Console.WriteLine();
         Console.WriteLine($"현재 {BattleStartScene.CurrentFloor}층에 도달했습니다");

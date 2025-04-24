@@ -116,5 +116,19 @@ public class Player
         Inventory.Remove(id);
         EquippedList.Add(id);
     }
+
+    public void GainExp(int exp)
+    {
+        Exp += exp;
+
+        int requiredExp = GetRequiredExp();
+        if (Exp > requiredExp)
+        {
+            Level++;
+            Exp -= requiredExp;
+        }
+    }
+
+    public int GetRequiredExp() { return (int)(50 * Math.Pow(Level, 1.5)); }
 }
 
