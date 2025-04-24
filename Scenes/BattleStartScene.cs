@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 public class BattleStartScene : SceneBase
 {
-
+    Player player => Game.Instance.player;
     public static int CurrentFloor = 1; // 현재 층
     List<MonsterData> selectedMonsters = new List<MonsterData>();//류건)위치를 RenderCustomArea()에서 밖으로 뺐습니다. 이 씬에서 생성된 몹 정보를 배틀씬에서 받아가기 위해
     public override void AddSelections() //류건)배틀씬으로 가기 위한 코드들을 넣었습니다
@@ -64,17 +65,13 @@ public class BattleStartScene : SceneBase
         Console.WriteLine();
 
         ////내정보 출력 (레벨,이름,직업, 체력)
-        //Console.WriteLine("[내정보]");
-        //Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.playerClass}");
-        //Console.WriteLine($"{player.playerHp}/{player.playerMaxhp}");
-            
+        Console.WriteLine("[내정보]");
+        Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
+        Console.WriteLine($"HP {player.CurrentHp} ");
         ShowSelections();
     }
 
-    // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들 됩니다
-
-
-        // 이건 예시, 상태 보기 씬을 만들 때
+   
     public void LoadStatusScene()
     {
         // 상태 보기씬 만들어서 Game.Instance.LoadScene(new 만든 씬); 하면 됩니다
