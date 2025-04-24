@@ -43,6 +43,8 @@ public class Player
     public int Def { get; set; }
     public int BaseHp { get; set; }
     public int CurrentHp { get; set; }
+    public int BaseMp { get; set; }
+    public int CurrentMp { get; set; }
     public int Gold { get; set; }
 
     public int Exp { get; set; }
@@ -52,7 +54,8 @@ public class Player
     // bonusHP는 나중에 아이템 추가 제거할 때 실시간 계산해서 넣을 변수입니다
     // 최대 체력 계산할 때마다 위의 아이템 리스트에서 꺼내오는 방법도 있지만 매번 연산해야할 게 많아지니까
     // 체력 옵션 붙은 아이템 추가/제거할 때나 처음 게임 로드할 때 실시간으로 계산해서 들고 있을 일종의 캐싱 목적 변수입니다
-    private int bonusHP; 
+    private int bonusHP;
+    private int bonusMP;
 
     public int MaxHP => BaseHp + bonusHP;
     public Player()

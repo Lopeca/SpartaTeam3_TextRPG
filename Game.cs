@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 
@@ -23,9 +24,7 @@ public class Game
 
     internal void Play()
     {
-
         LoadScene(new IntroScene());
-
     }
 
     public void LoadScene(SceneBase scene)
@@ -63,9 +62,12 @@ public class Game
             Directory.CreateDirectory(savePath);
         }
 
-        string filename = player.Name + ".json";
+        string fileName = player.Name + ".json";
+        string filePath = Path.Combine(savePath, fileName);
 
+        string json = JsonSerializer.Serialize(player);
 
+        File.WriteAllText(filePath, json);
     }
 }
 
