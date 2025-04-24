@@ -46,7 +46,6 @@ public class Player
     public int Def { get; set; }
     public int BaseHp { get; set; }
     public int CurrentHp { get; set; }
-    public int LevelUpHp { get; set; }
     public int Gold { get; set; }
     public int BaseExp {  get; set; }
     public int CurrentExp
@@ -59,7 +58,7 @@ public class Player
             {
                 int overExp = currentExp - maxExp[Level];
                 currentExp = overExp;
-                LevelUpHp += 5; // 레벨업 시 체력 상승
+                BaseHp += 5; // 레벨업 시 체력 상승
             }
         }
     }
@@ -73,7 +72,7 @@ public class Player
     private int maxLevel = 51;
     private int[] maxExp;
 
-    public int MaxHP => BaseHp + bonusHP + LevelUpHp;
+    public int MaxHP => BaseHp + bonusHP;
     public Player()
     {
         Name = "";

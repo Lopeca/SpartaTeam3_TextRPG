@@ -20,7 +20,7 @@ public class PlayerStatusScene : SceneBase
         Console.WriteLine($"공격력 : {player.Atk}");
         Console.WriteLine($"방어력 : {player.Def}");
         Console.WriteLine($"체  력 : {player.CurrentHp} / {player.MaxHP}");
-        Console.WriteLine($"경험치 : {player.BaseExp}");
+        Console.WriteLine($"경험치 : {player.BaseExp} / {}");
         Console.WriteLine($"Gold   : {player.Gold} G");
         Console.WriteLine();
     }
