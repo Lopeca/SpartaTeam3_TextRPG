@@ -8,7 +8,7 @@ public class StartScene : SceneBase
 {
     public override void AddSelections()
     {
-        selections.Add(new Menu("상태 보기", LoadStatusScene));
+        selections.Add(new Menu("상태 보기", () => Game.Instance.LoadScene(new PlayerStatusScene())));
         selections.Add(new Menu("전투 시작", () => Game.Instance.LoadScene(new BattleStartScene())));
 
     }
