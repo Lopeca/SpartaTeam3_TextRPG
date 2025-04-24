@@ -194,10 +194,10 @@ namespace Team3TextRPG.Scenes
 
                 if (allDead) //몬스터를 모두 죽였으면 발생
                 {
-                    Console.Clear();
-                    Console.WriteLine("전투 승리!");
-                    Console.ReadLine();
-                    Game.Instance.LoadScene(new StartScene()); //처음으로 돌아갑니다. 깎인 체력은 유지됩니다!!!
+                    //Console.Clear();
+                    //Console.WriteLine("전투 승리!");
+                    //Console.ReadLine();
+                    Game.Instance.ChangeScene(new BattleVictory(monsters)); //처음으로 돌아갑니다. 깎인 체력은 유지됩니다!!!
                     
                     return;
                 }

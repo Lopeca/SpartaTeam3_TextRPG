@@ -22,7 +22,7 @@ public class BattleStartScene : SceneBase
                 .Select(md => new Monster(md))
                 .ToList();
 
-            Game.Instance.LoadScene(new BattleScene(monsters));
+            Game.Instance.ChangeScene(new BattleScene(monsters));
         }));
 
         selections.Add(new Menu("나가기", () =>
@@ -69,19 +69,6 @@ public class BattleStartScene : SceneBase
         Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
         Console.WriteLine($"HP {player.CurrentHp} ");
         ShowSelections();
-    }
-
-   
-    public void LoadStatusScene()
-    {
-        // 상태 보기씬 만들어서 Game.Instance.LoadScene(new 만든 씬); 하면 됩니다
-        // 그 외 커스텀 씬 만들 때 이런 느낌인 점 참고
-        Console.WriteLine("상태 보기 대신에 출력되는 문장");
-    }
-
-    public void LoadBattleScene()
-    {
-        Console.WriteLine("전투 씬 대신에 출력되는 문장");
     }
 }
 

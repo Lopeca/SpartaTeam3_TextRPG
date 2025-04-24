@@ -72,25 +72,9 @@ public class BattleVictory : SceneBase
         Console.WriteLine($"현재 {BattleStartScene.CurrentFloor}층에 도달했습니다");
         Console.WriteLine();
 
-        selections.Add(new Menu("마을로 돌아가기", () => Game.Instance.LoadScene(new StartScene())));
-
         ShowSelections();
     }
 
     // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들면 됩니다
-
-
-    // 이건 예시, 상태 보기 씬을 만들 때
-    public void LoadStatusScene()
-    {
-        // 상태 보기씬 만들어서 Game.Instance.LoadScene(new 만든 씬); 하면 됩니다
-        // 그 외 커스텀 씬 만들 때 이런 느낌인 점 참고
-        Console.WriteLine("상태 보기 대신에 출력되는 문장");
-    }
-
-    public void LoadBattleScene()
-    {
-        Console.WriteLine("전투 씬 대신에 출력되는 문장");
-    }
 }
 
