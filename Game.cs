@@ -37,4 +37,4 @@ public class Game
         if(scenes.Count != 0) scenes.Peek().RenderScene();
     }
 }
-
+// 커밋 테스트
