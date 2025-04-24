@@ -22,6 +22,6 @@ public class PlayerStatusScene : SceneBase
         Console.WriteLine($"체  력 : {player.CurrentHp} / {player.MaxHP}");
         Console.WriteLine($"경험치 : {player.BaseExp}");
         Console.WriteLine($"Gold   : {player.Gold} G");
-        Console.Write("\n");
+        Console.WriteLine();
     }
 }
