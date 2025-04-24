@@ -50,9 +50,15 @@ public class BattleStartScene : SceneBase
 
         for (int i = 0; i < monsterCount; i++) //몬스터 선택
         {
-            int randomIndex = random.Next((CurrentFloor-1), MonsterDB.monsterList.Count);
+            int maxMonsterLv = Math.Min((int)(2 + ((1.5) * CurrentFloor)), MonsterDB.monsterList.Count);
+            int minMonsterLv = Math.Min((int)(((1.5) * CurrentFloor) - 1),MonsterDB.monsterList.Count);
+           
+            
+                int randomIndex = random.Next(minMonsterLv, maxMonsterLv);
 
-            selectedMonsters.Add(MonsterDB.monsterList[randomIndex]);
+                selectedMonsters.Add(MonsterDB.monsterList[randomIndex]);
+            
+
         }
 
         //랜덤 선택된 몬스터 출력
