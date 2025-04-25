@@ -12,14 +12,12 @@ namespace Team3TextRPG.Scenes
     public class BattleScene : SceneBase
     {
         List<Monster> monsters;
+        Player player => Game.Instance.player; //아직은 여기서 임시로 플레이어 정보를 가져옴
 
         public BattleScene(List<Monster> monsters)
         {
             this.monsters = monsters;
         }
-
-        Player player => Game.Instance.player; //아직은 여기서 임시로 플레이어 정보를 가져옴
-
 
         void ShowPlayerStatus()
         {
@@ -27,12 +25,11 @@ namespace Team3TextRPG.Scenes
             PrintPlayerStatus();
         }
 
-        void PrintPlayerStatus()//이거는 PlayerLSH cs 파일에서 아래의 정보들이 있게끔 조금 수정했습니다.
+        void PrintPlayerStatus()
         {
             Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
             Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
         }
-        // 기존 GenerateMonsters()는 더 이상 호출하지 않음
         // Init() 또는 AddSelections()에서 받은 monsters만 사용
         //어떤 선택지가 있는가
         public override void AddSelections()
@@ -41,10 +38,8 @@ namespace Team3TextRPG.Scenes
             selections.Clear();//혹시 남아있을지 모르는 다른 구문 치워버리기 
             selections.Add(new Menu("도망친다", () =>
             {
-                Game.Instance.ResetToStart();
-                //Game.Instance.ChangeScene(new StartScene());
+                Game.Instance.ResetToStart(); //배틀 스타트씬으로 돌아가는 것마저 스킵하면서(실제론 거쳐가는 느낌) 시작화면으로 돌아가기 위한 수정
             }));
-            //배틀 스타트씬으로 돌아가는 것마저 스킵하면서(실제론 거쳐가는 느낌) 시작화면으로 돌아가기 위한 수정
             selections.Add(new Menu("공격", AttackPhase));
             
         }
@@ -64,7 +59,7 @@ namespace Team3TextRPG.Scenes
             Console.WriteLine("Battle!!");
             Console.WriteLine();
 
-            // 1. 몬스터 목록 다시 출력
+            // 몬스터 목록 다시 출력
             for (int i = 0; i < monsters.Count; i++)
             {
                 string status = monsters[i].ToString();
@@ -76,11 +71,10 @@ namespace Team3TextRPG.Scenes
             Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
             Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
             Console.WriteLine();
-
             Console.WriteLine("0. 취소");
             Console.WriteLine("대상을 선택해주세요.");
 
-            // 2. 입력 받기
+            // 입력 받기
             while (true)
             {
                 Console.Write(">> ");
@@ -112,8 +106,7 @@ namespace Team3TextRPG.Scenes
                     continue;
                 }
 
-                // 3. 공격 처리
-
+                // 공격 처리
                 Random random = new Random();
                 bool Gamnabit = random.Next(0, 100) < 10;       // 10% 확률로 회피
                 bool isCritical = !Gamnabit && random.Next(0, 100) < 15; // 회피가 아닐 때 15% 확률로 치명타
@@ -127,16 +120,14 @@ namespace Team3TextRPG.Scenes
                 if (Gamnabit)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"Chad 의 공격!");
-                    Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
-                    Console.WriteLine();
-                    Console.WriteLine("0. 다음");
+                    Console.WriteLine($"{player.Name}의 공격!");
+                    Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.\n");
+                    Console.WriteLine("<<아무 키나 눌러 계속>>");
                     Console.ReadLine();
 
                     EnemyPhase(); // 회피 후 바로 상대에게 턴을 넘긴다
                     return; // 회피 발생 시 이후 공격 로직 중단
                 }
-
                 
                 if (isCritical)
                 {
@@ -146,7 +137,7 @@ namespace Team3TextRPG.Scenes
                 target.CurrentHP -= finalDamage;
 
                 Console.WriteLine();
-                Console.WriteLine($"Chad의 공격!");
+                Console.WriteLine($"{player.Name}의 공격!");
                 Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 맞췄습니다. [데미지 : {finalDamage}]{(isCritical ? " - 치명타 공격!!" : "")}");
 
                 if (target.IsDead)//타겟이 죽으면 사망처리
@@ -160,14 +151,11 @@ namespace Team3TextRPG.Scenes
                 }
 
                 Console.WriteLine();
-                Console.WriteLine("0. 다음");
+                Console.WriteLine("<<아무 키나 눌러 계속>>");
                 Console.ReadLine();
-
                 break;
             }
-
             EnemyPhase(); //상대 턴으로 넘어가기
-
 
         }
         void EnemyPhase() //몬스터의 공격
@@ -184,18 +172,22 @@ namespace Team3TextRPG.Scenes
 
                 Console.WriteLine($"Lv.{monster.Level} {monster.Name}의 공격!");
                 Console.WriteLine($"{player.Name}을(를) 맞췄습니다. [데미지 : {damage}]");
-                Console.WriteLine($"현재 HP : {player.CurrentHp}\n");
+                
 
                 if (player.CurrentHp <= 0) //플레이어의 체력이 0이하로 내려갔는지 아닌지 체크
                 {
                     player.CurrentHp = 0; // 플레이어 체력을 수치적으로 0으로 고정
-                    break; //즉시 전투 루프종료. 그러면 패배페이즈로.
+                    Console.WriteLine($"현재 HP : 0 (사망)\n"); //사망했음을 고지
+                    Console.WriteLine("<<아무 키나 눌러 계속>>");//사망 문구 스킵이 안되게끔 배치
+                    Console.ReadLine();
+                    break; //즉시 전투 로직 종료. 그러면 패배페이즈로.
                 }
-
-                Console.WriteLine("0. 다음"); //살았으면 전투 속행
+                Console.WriteLine($"현재 HP : {player.CurrentHp}\n");
+                Console.WriteLine("<<아무 키나 눌러 계속>>"); //살았으면 전투 속행
                 Console.ReadLine();
             }
 
+        void CheckGameEnd() { }
             CheckGameEnd();
             // 승패가 결정되지 않았다면 → 다음 턴: 다시 플레이어의 선택 유도
             {
@@ -204,7 +196,7 @@ namespace Team3TextRPG.Scenes
                     Console.Clear();
                     Console.WriteLine("당신은 차디찬 던전에서 삶을 마감했다!");
                     Console.ReadLine();
-                    Game.Instance.LoadScene(new StartScene()); //처음으로 돌아갑니다. 사실상 재시작이나 다름없습니다
+                    Game.Instance.ResetToStart(); //처음으로 돌아갑니다. 
                     return;
                 }
 
@@ -223,7 +215,7 @@ namespace Team3TextRPG.Scenes
                     Console.Clear();
                     Console.WriteLine("전투 승리!");
                     Console.ReadLine();
-                    Game.Instance.LoadScene(new StartScene()); //처음으로 돌아갑니다. 깎인 체력은 유지됩니다!!!
+                    Game.Instance.ResetToStart(); //처음으로 돌아갑니다. 깎인 체력은 유지됩니다!!!
                     return;
                 }
                 selections.Clear();
@@ -243,17 +235,5 @@ namespace Team3TextRPG.Scenes
                 Console.WriteLine($"{i + 1}. {status}");
             }
         }
-
-
-
-       
-        //void ShowPlayerStatus() { }
-        //void AttackPhase() {  }
-        //
-        //void EnemyPhase() {  }
-        void CheckGameEnd() {  }
     }
-
-
-
 }
