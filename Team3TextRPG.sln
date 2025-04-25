@@ -5,6 +5,16 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Team3TextRPG", "Team3TextRPG.csproj", "{ADC48822-8B94-10E5-B5C7-6646E6AEE561}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{2A3A057F-5D22-31FD-628C-DF5EF75AEF1E}"
+	ProjectSection(SolutionItems) = preProject
+		..\Text Rpg_Git\JobSelectionScene.cs = ..\Text Rpg_Git\JobSelectionScene.cs
+		..\Text Rpg_Git\Player.cs = ..\Text Rpg_Git\Player.cs
+		..\Text Rpg_Git\Program.cs = ..\Text Rpg_Git\Program.cs
+		SceneBase.cs = SceneBase.cs
+		..\Text Rpg_Git\ShopScene.cs = ..\Text Rpg_Git\ShopScene.cs
+		..\Text Rpg_Git\StartScene.cs = ..\Text Rpg_Git\StartScene.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

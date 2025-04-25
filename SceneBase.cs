@@ -101,3 +101,4 @@ public abstract class SceneBase
         selections.Add(new Menu("나가기", Game.Instance.CloseScene));
     }
 }
+// 커밋 테스트
