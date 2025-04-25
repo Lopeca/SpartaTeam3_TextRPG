@@ -7,7 +7,6 @@ using System.Xml.Linq;
 
 public class StartScene : SceneBase
 {
-
     
     public override void AddSelections()
     {
@@ -16,7 +15,8 @@ public class StartScene : SceneBase
         selections.Add(new Menu("상태 보기", () => Game.Instance.LoadScene(new PlayerStatusScene())));
         selections.Add(new Menu("전투 시작", () => Game.Instance.LoadScene(new BattleStartScene())));
         selections.Add(new Menu("저장하기", () => Save()));
-
+        
+        //[나가기, 상태보기, 전투시작, 저장하기]
     }
 
     private void Save()
@@ -30,10 +30,15 @@ public class StartScene : SceneBase
     public override void RenderCustomArea()
     {
 
-        Console.WriteLine("========================================");
-        Console.WriteLine(" Sparta RPG Adventure에 오신 것을 환영합니다!");
-        Console.WriteLine("========================================");
-        
+        Console.WriteLine("==================================================\n");
+        GraphicUtility.WriteWithColor($"{Game.Instance.player.Name}", ConsoleColor.Yellow);
+        Console.Write(" 님! ");
+        GraphicUtility.WriteRainbowText("Sparta RPG Adventure");
+        Console.WriteLine("에 오신 것을 환영합니다!\n");
+        Console.WriteLine("==================================================");
+        Console.WriteLine();
+
+
 
         ShowSelections();
     }

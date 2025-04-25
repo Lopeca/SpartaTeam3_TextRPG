@@ -50,7 +50,7 @@ public class Player
     public int CurrentMp { get; set; }
     public int Gold { get; set; }
 
-    public int Exp { get; set; }
+    public int currentExp { get; set; }
 
     public List<int> EquippedList { get; set; }
     public List<int> Inventory { get; set; }

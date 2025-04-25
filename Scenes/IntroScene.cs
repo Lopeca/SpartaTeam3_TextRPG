@@ -16,11 +16,10 @@ public class IntroScene : SceneBase
     // 씬에 실제로 출력되는 함수는 여기, SceneBase에서 이 함수 후에 종료 버튼과 입력을 알아서 묻습니다.
     public override void RenderCustomArea()
     {
-       GraphicUtility.DrawRect('■', 79, 16);
+        GraphicUtility.DrawRect('■', 79, 16);
         DrawTitleText();
 
         Console.WriteLine();
-        GraphicUtility.DrawLine();
 
         ShowSelections();
     }

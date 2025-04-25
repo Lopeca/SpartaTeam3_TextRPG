@@ -32,8 +32,9 @@ public class BattleStartScene : SceneBase
     public override void RenderCustomArea()
     {
         MonsterDB.MonsterInit();
-        Console.WriteLine($"현재 {CurrentFloor}층");
-        Console.WriteLine("몬스터가 나타났다!\n");
+        GraphicUtility.WriteTitle($"현재 {CurrentFloor}층");
+
+        Console.WriteLine("\n몬스터가 나타났다!\n");
         Random random = new Random();
         int monsterCount = random.Next(1, 4+CurrentFloor);
         selectedMonsters.Clear(); // 류건)'배틀 스타트 씬'이 열릴때마다 몬스터를 매번 새로 생성
@@ -65,7 +66,8 @@ public class BattleStartScene : SceneBase
         ////내정보 출력 (레벨,이름,직업, 체력)
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
-        Console.WriteLine($"HP {player.CurrentHp} ");
+        Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp} ");
+        Console.WriteLine();
         ShowSelections();
     }
 }

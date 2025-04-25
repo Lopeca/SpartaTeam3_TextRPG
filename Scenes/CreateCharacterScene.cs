@@ -18,10 +18,10 @@ public class CreateCharacterScene : SceneBase
     }
     public override void AddSelections()
     {       
-        selections.Add(new Menu("전사", () => CreateCharacter(CharacterClass.Warrior)));
-        selections.Add(new Menu("마법사", () => CreateCharacter(CharacterClass.Mage)));
-        selections.Add(new Menu("궁수", () => CreateCharacter(CharacterClass.Archer)));
-        selections.Add(new Menu("도적", () => CreateCharacter(CharacterClass.Assassin)));
+        selections.Add(new Menu("전사 - 거대한 대검과 갑옷으로 최전선에서 싸우는 상남자!", () => CreateCharacter(CharacterClass.Warrior)));
+        selections.Add(new Menu("마법사 - 광범위한 공격이 특기인 화려하고 무자비한 클래스!", () => CreateCharacter(CharacterClass.Mage)));
+        selections.Add(new Menu("궁수 - 정확한 사격과 기동력으로 적을 공략!", () => CreateCharacter(CharacterClass.Archer)));
+        selections.Add(new Menu("도적 - 빠른 연속 공격과 회피가 특기!", () => CreateCharacter(CharacterClass.Assassin)));
     }
 
    
@@ -34,6 +34,8 @@ public class CreateCharacterScene : SceneBase
         string? nickname = null;
         while (nickname == null)
         {
+            GraphicUtility.WriteTitle("캐릭터 생성");
+            Console.WriteLine();
             Console.WriteLine("사용할 이름을 입력하세요.");
             Console.WriteLine(">>");
             nickname = Console.ReadLine();
@@ -48,6 +50,9 @@ public class CreateCharacterScene : SceneBase
         player.Name = nickname;
 
         Console.Clear();
+
+        GraphicUtility.WriteTitle("캐릭터 생성");
+        Console.WriteLine();
         Console.WriteLine("직업을 선택하세요.\n");
 
         ShowSelections();

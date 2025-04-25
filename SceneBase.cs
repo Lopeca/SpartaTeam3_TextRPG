@@ -32,6 +32,7 @@ public abstract class SceneBase
             Console.WriteLine(Game.Instance.messageLog + "\n");
             Game.Instance.messageLog = null;
         }
+
         RenderCustomArea();
         ShowQuitMenu();
         AskSelection(out ISelectable selected);
@@ -46,19 +47,21 @@ public abstract class SceneBase
 
         for (int i = 1; i < selections.Count; i++)
         {
+
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"{i}.");
+            Console.Write($"{i}. ");
             Console.ResetColor();
+
             Console.WriteLine($"{selections[i].Name}");
         }
 
-        Console.WriteLine();
+       
 
     }
     public void ShowQuitMenu()
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write($"0.");
+        Console.Write($"0. ");
         Console.ResetColor();
         Console.WriteLine($"{selections[0].Name}\n");
     }

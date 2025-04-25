@@ -96,7 +96,9 @@ public class ChooseCharacterScene : SceneBase
     // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들면 됩니다
     private void RenderSceneDefaultState()
     {
-        Console.WriteLine("<<캐릭터 선택>>");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        GraphicUtility.WriteTitle("캐릭터 선택");
+        Console.ResetColor();
 
         if (characters.Count == 0)
         {

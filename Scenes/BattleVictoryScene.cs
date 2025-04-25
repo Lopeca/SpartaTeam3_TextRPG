@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Team3TextRPG.Scenes;
 using Team3TextRPG;
 using System.Security.Cryptography.X509Certificates;
-public class BattleVictory : SceneBase
+public class BattleVictoryScene : SceneBase
 {
 
     private List<Monster> defeatedMonsters;
@@ -14,7 +14,7 @@ public class BattleVictory : SceneBase
     private int totalGold = 0;
     Player player => Game.Instance.player;
 
-    public BattleVictory(List<Monster> monsters)
+    public BattleVictoryScene(List<Monster> monsters)
     {
         
         BattleStartScene.CurrentFloor++;
@@ -45,7 +45,7 @@ public class BattleVictory : SceneBase
 
     private void ApplyRewards()
     {
-        player.Exp += totalExp;
+        player.currentExp += totalExp;
         player.Gold += totalGold;
 
     }

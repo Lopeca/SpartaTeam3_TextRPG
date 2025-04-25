@@ -197,7 +197,7 @@ namespace Team3TextRPG.Scenes
                     //Console.Clear();
                     //Console.WriteLine("전투 승리!");
                     //Console.ReadLine();
-                    Game.Instance.ChangeScene(new BattleVictory(monsters)); //처음으로 돌아갑니다. 깎인 체력은 유지됩니다!!!
+                    Game.Instance.ChangeScene(new BattleVictoryScene(monsters)); //처음으로 돌아갑니다. 깎인 체력은 유지됩니다!!!
                     
                     return;
                 }

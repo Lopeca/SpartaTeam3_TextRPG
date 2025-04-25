@@ -82,5 +82,19 @@ public static class GraphicUtility
         }
         Console.ResetColor();
     }
+
+    internal static void WriteWithColor(string text, ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+        Console.Write(text);
+        Console.ResetColor();
+    }
+    
+    internal static void WriteTitle(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine($" << {text} >>");
+        Console.ResetColor();
+    }
 }
 
