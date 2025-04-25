@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data.Common;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
@@ -20,7 +21,7 @@ public class PlayerStatusScene : SceneBase
         Console.WriteLine($"공격력 : {player.Atk}");
         Console.WriteLine($"방어력 : {player.Def}");
         Console.WriteLine($"체  력 : {player.CurrentHp} / {player.MaxHP}");
-        Console.WriteLine($"경험치 : {player.BaseExp} / {}");
+        Console.WriteLine($"경험치 : {player.BaseExp} / {(int)(MathF.Pow(player.Level, 1.5f) * 50)}");
         Console.WriteLine($"Gold   : {player.Gold} G");
         Console.WriteLine();
     }

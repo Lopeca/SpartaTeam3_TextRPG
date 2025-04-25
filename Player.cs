@@ -54,9 +54,9 @@ public class Player
         set
         {
             currentExp += value;
-            if (currentExp >= maxExp[Level])
+            if (currentExp >= (int)(MathF.Pow(Level, 1.5f) * 50))
             {
-                int overExp = currentExp - maxExp[Level];
+                int overExp = currentExp - (int)(MathF.Pow(Level, 1.5f) * 50);
                 currentExp = overExp;
                 BaseHp += 5; // 레벨업 시 체력 상승
             }
@@ -69,8 +69,6 @@ public class Player
     // 체력 옵션 붙은 아이템 추가/제거할 때나 처음 게임 로드할 때 실시간으로 계산해서 들고 있을 일종의 캐싱 목적 변수입니다
     private int bonusHP;
     private int currentExp;
-    private int maxLevel = 51;
-    private int[] maxExp;
 
     public int MaxHP => BaseHp + bonusHP;
     public Player()
@@ -99,14 +97,6 @@ public class Player
                 BaseHp = 100;
                 CurrentHp = BaseHp;
                 break;
-        }
-    }
-    public void MaxEXP()
-    {
-        maxExp = new int[maxLevel];
-        for (int i = 1; i < maxExp.Length; i++)
-        {
-            maxExp[i] = (int)(MathF.Pow(i, 1.5f) * 50);
         }
     }
 }
