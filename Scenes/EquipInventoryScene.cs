@@ -4,18 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public enum EqInventoryState
-{
-    Default,
-    Equip
-}
+
 public class EquipInventoryScene : SceneBase
 {
-    EqInventoryState sceneState;
+
     Player player = Game.Instance.player;
     public EquipInventoryScene()
     {
-        sceneState = EqInventoryState.Default;
     }
     public override void AddSelections()
     {
@@ -67,16 +62,6 @@ public class EquipInventoryScene : SceneBase
             Console.WriteLine($"{selections[i+1].Name}");
         }
         GraphicUtility.DrawLine();
-
-        //switch(sceneState)
-        //{
-        //    case InventoryState.Default:
-        //        RenderDefaultState();
-        //        break;
-        //    case InventoryState.Equip:
-        //        RenderEquipState();
-        //        break;
-        //}
     }
 
     private void Equip(EquipDB eqItem)
@@ -90,22 +75,5 @@ public class EquipInventoryScene : SceneBase
         player.UnEquipItem(eqItem.itemID);
         Init();
     }
-    private void RenderEquipState()
-    {
-        GraphicUtility.WriteTitle("인벤토리 - 장착");
-    }
-
-    private void RenderDefaultState()
-    {
-        throw new NotImplementedException();
-    }
-
-    // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들면 됩니다
-    private void ChangeSceneState(EqInventoryState state)
-    {
-        sceneState = state;
-        Init();
-    }
-
 }
 
