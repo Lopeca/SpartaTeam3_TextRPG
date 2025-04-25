@@ -5,20 +5,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Team3TextRPG;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Team3TextRPG.Scenes
 {
     public class BattleScene : SceneBase
     {
         List<Monster> monsters;
+        Player player => Game.Instance.player; //아직은 여기서 임시로 플레이어 정보를 가져옴
 
         public BattleScene(List<Monster> monsters)
         {
             this.monsters = monsters;
         }
-
-        Player player => Game.Instance.player; //아직은 여기서 임시로 플레이어 정보를 가져옴
-
 
         void ShowPlayerStatus()
         {
@@ -26,12 +25,11 @@ namespace Team3TextRPG.Scenes
             PrintPlayerStatus();
         }
 
-        void PrintPlayerStatus()//이거는 PlayerLSH cs 파일에서 아래의 정보들이 있게끔 조금 수정했습니다.
+        void PrintPlayerStatus()
         {
             Console.WriteLine($"Lv. {player.Level} {player.Name} ({CharacterClassStr.GetKRString(player.CharacterClass)})");
             Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
         }
-        // 기존 GenerateMonsters()는 더 이상 호출하지 않음
         // Init() 또는 AddSelections()에서 받은 monsters만 사용
         //어떤 선택지가 있는가
         public override void AddSelections()
@@ -87,7 +85,7 @@ namespace Team3TextRPG.Scenes
             Console.WriteLine("취소\n");
             Console.WriteLine("대상을 선택해주세요.");
 
-            // 2. 입력 받기
+            // 입력 받기
             while (true)
             {
                 Console.Write(">> ");
@@ -121,12 +119,33 @@ namespace Team3TextRPG.Scenes
                     continue;
                 }
 
-                // 3. 공격 처리
+                // 공격 처리
+                Random random = new Random();
+                bool Gamnabit = random.Next(0, 100) < 10;       // 10% 확률로 회피
+                bool isCritical = !Gamnabit && random.Next(0, 100) < 15; // 회피가 아닐 때 15% 확률로 치명타
+
                 int baseDamage = player.Atk;
                 double variation = baseDamage * 0.1; //실제 공격에는 10%의 피해 증감량이 있음
                 int min = (int)Math.Ceiling(baseDamage - variation);
                 int max = (int)Math.Floor(baseDamage + variation + 1);
-                int finalDamage = new Random().Next(min, max);
+                int finalDamage = new Random().Next(min, max + 1);
+
+                if (Gamnabit)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"{player.Name}의 공격!");
+                    Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.\n");
+                    Console.WriteLine("<<아무 키나 눌러 계속>>");
+                    Console.ReadLine();
+
+                    EnemyPhase(); // 회피 후 바로 상대에게 턴을 넘긴다
+                    return; // 회피 발생 시 이후 공격 로직 중단
+                }
+                
+                if (isCritical)
+                {
+                    finalDamage = (int)Math.Ceiling(finalDamage * 1.6); // 치명타는 160% 데미지
+                }
 
                 int targetPrevHp = target.CurrentHP;
                 target.TakeDamage(finalDamage);
@@ -135,7 +154,7 @@ namespace Team3TextRPG.Scenes
                 Console.Clear();
                 Console.WriteLine($"{Game.Instance.player.Name}의 공격!");
                 Console.Write($"Lv.{target.Level} {target.Name} 을(를) 맞췄습니다. ");
-                GraphicUtility.WriteWithColor($"[대미지 : {appliedDamage}]\n", ConsoleColor.Red);
+                GraphicUtility.WriteWithColor($"[대미지 : {finalDamage}]{(isCritical ? " - 치명타 공격!!" : "")}\n", ConsoleColor.Red);
 
                 if (target.IsDead)//타겟이 죽으면 사망처리
                 {
@@ -149,12 +168,9 @@ namespace Team3TextRPG.Scenes
                 Console.WriteLine();
                 Console.WriteLine("(엔터) 다음");
                 Console.ReadLine();
-
                 break;
             }
-
             EnemyPhase(); //상대 턴으로 넘어가기
-
 
         }
         void EnemyPhase() //몬스터의 공격
@@ -180,13 +196,17 @@ namespace Team3TextRPG.Scenes
                 if (player.CurrentHp <= 0) //플레이어의 체력이 0이하로 내려갔는지 아닌지 체크
                 {
                     player.CurrentHp = 0; // 플레이어 체력을 수치적으로 0으로 고정
-                    break; //즉시 전투 루프종료. 그러면 패배페이즈로.
+                    Console.WriteLine($"현재 HP : 0 (사망)\n"); //사망했음을 고지
+                    Console.WriteLine("<<아무 키나 눌러 계속>>");//사망 문구 스킵이 안되게끔 배치
+                    Console.ReadLine();
+                    break; //즉시 전투 로직 종료. 그러면 패배페이즈로.
                 }
 
                 Console.WriteLine("(엔터) 다음"); //살았으면 전투 속행
                 Console.ReadLine();
             }
 
+        void CheckGameEnd() { }
             CheckGameEnd();
             // 승패가 결정되지 않았다면 → 다음 턴: 다시 플레이어의 선택 유도
             {
@@ -237,17 +257,5 @@ namespace Team3TextRPG.Scenes
             }
             GraphicUtility.DrawLine();
         }
-
-
-
-
-        //void ShowPlayerStatus() { }
-        //void AttackPhase() {  }
-        //
-        //void EnemyPhase() {  }
-        void CheckGameEnd() {  }
     }
-
-
-
 }
