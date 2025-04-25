@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Team3TextRPG;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Team3TextRPG.Scenes
 {
@@ -112,20 +113,45 @@ namespace Team3TextRPG.Scenes
                 }
 
                 // 3. 공격 처리
+
+                Random random = new Random();
+                bool Gamnabit = random.Next(0, 100) < 10;       // 10% 확률로 회피
+                bool isCritical = !Gamnabit && random.Next(0, 100) < 15; // 회피가 아닐 때 15% 확률로 치명타
+
                 int baseDamage = player.Atk;
                 double variation = baseDamage * 0.1; //실제 공격에는 10%의 피해 증감량이 있음
                 int min = (int)Math.Ceiling(baseDamage - variation);
                 int max = (int)Math.Floor(baseDamage + variation + 1);
-                int finalDamage = new Random().Next(min, max);
+                int finalDamage = new Random().Next(min, max + 1);
+
+                if (Gamnabit)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Chad 의 공격!");
+                    Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+                    Console.WriteLine();
+                    Console.WriteLine("0. 다음");
+                    Console.ReadLine();
+
+                    EnemyPhase(); // 회피 후 바로 상대에게 턴을 넘긴다
+                    return; // 회피 발생 시 이후 공격 로직 중단
+                }
+
+                
+                if (isCritical)
+                {
+                    finalDamage = (int)Math.Ceiling(finalDamage * 1.6); // 치명타는 160% 데미지
+                }
 
                 target.CurrentHP -= finalDamage;
 
                 Console.WriteLine();
                 Console.WriteLine($"Chad의 공격!");
-                Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 맞췄습니다. [데미지 : {finalDamage}]");
+                Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 맞췄습니다. [데미지 : {finalDamage}]{(isCritical ? " - 치명타 공격!!" : "")}");
 
                 if (target.IsDead)//타겟이 죽으면 사망처리
                 {
+                    target.CurrentHP = 0; //죽으면 체력 0으로 고정
                     Console.WriteLine($"\nLv.{target.Level} {target.Name}\nHP {target.CurrentHP + finalDamage} → Dead");
                 }
                 else //타겟이 살면 현제 피통 감소량 반영
