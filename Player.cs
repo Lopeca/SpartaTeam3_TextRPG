@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Team3TextRPG;
 
 
 public static class CharacterClassStr
@@ -20,6 +22,7 @@ public static class CharacterClassStr
         Map.TryGetValue(cClass, out var result);
         return result;
     }
+
 }
 public enum CharacterClass
 {
@@ -52,6 +55,10 @@ public class Player
     public List<int> EquippedList { get; set; }
     public List<int> Inventory { get; set; }
 
+    public int BaseExp {  get; set; }
+
+    public List<int> ItemId { get; set; }
+
     // bonusHP는 나중에 아이템 추가 제거할 때 실시간 계산해서 넣을 변수입니다
     // 최대 체력 계산할 때마다 위의 아이템 리스트에서 꺼내오는 방법도 있지만 매번 연산해야할 게 많아지니까
     // 체력 옵션 붙은 아이템 추가/제거할 때나 처음 게임 로드할 때 실시간으로 계산해서 들고 있을 일종의 캐싱 목적 변수입니다
@@ -61,6 +68,7 @@ public class Player
     private int bonusDef;
 
     public int MaxHP => BaseHp + bonusHP;
+
     public Player()
     {
         Name = "";
@@ -115,6 +123,9 @@ public class Player
 
         Inventory.Remove(id);
         EquippedList.Add(id);
+    }
+    public void GainExp(int exp) {
+        // 경험치 얻으면서 레벨업 로직
     }
 }
 

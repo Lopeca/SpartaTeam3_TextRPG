@@ -12,7 +12,8 @@ public class StartScene : SceneBase
     public override void AddSelections()
     {
         Console.WriteLine($"현재 {BattleStartScene.CurrentFloor}층");
-        selections.Add(new Menu("상태 보기", LoadStatusScene));
+
+        selections.Add(new Menu("상태 보기", () => Game.Instance.LoadScene(new PlayerStatusScene())));
         selections.Add(new Menu("전투 시작", () => Game.Instance.LoadScene(new BattleStartScene())));
         selections.Add(new Menu("저장하기", () => Save()));
 
@@ -38,14 +39,5 @@ public class StartScene : SceneBase
     }
 
     // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들면 됩니다
-
-
-    // 이건 예시, 상태 보기 씬을 만들 때
-    public void LoadStatusScene()
-    {
-        // 상태 보기씬 만들어서 Game.Instance.LoadScene(new 만든 씬); 하면 됩니다
-        // 그 외 커스텀 씬 만들 때 이런 느낌인 점 참고
-        Console.WriteLine("상태 보기 대신에 출력되는 문장");
-    }
 }
 
