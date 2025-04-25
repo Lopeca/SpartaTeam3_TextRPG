@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 public class SampleScene : SceneBase
 {
     // 부모 SceneBase의 멤버변수 selections : 인터페이스 ISelectable의 리스트 
+
+    public override void Init()
+    {
+        
+
+    }
     public override void AddSelections()
     {
         selections.Add(new Menu("상태 보기", LoadStatusScene));

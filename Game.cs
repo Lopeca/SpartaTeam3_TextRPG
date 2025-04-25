@@ -24,7 +24,7 @@ public class Game
 
     internal void Play()
     {
-        LoadScene(new IntroScene());
+        LoadScene(new SampleScene());
     }
 
     public void LoadScene(SceneBase scene)

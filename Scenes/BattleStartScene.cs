@@ -14,7 +14,7 @@ public class BattleStartScene : SceneBase
     List<MonsterData> selectedMonsters = new List<MonsterData>();//류건)위치를 RenderCustomArea()에서 밖으로 뺐습니다. 이 씬에서 생성된 몹 정보를 배틀씬에서 받아가기 위해
     public override void AddSelections() //류건)배틀씬으로 가기 위한 코드들을 넣었습니다
     {
-        selections.Clear();
+        
         selections.Add(new Menu("전투 시작", () =>
         {
             // MonsterData → Monster 로 변환해서 BattleScene에 넘김
@@ -24,14 +24,6 @@ public class BattleStartScene : SceneBase
 
             Game.Instance.ChangeScene(new BattleScene(monsters));
         }));
-
-        selections.Add(new Menu("나가기", () =>
-        
-        {
-        Game.Instance.CloseScene(); //혹시 이러면 해결? => 해보니까 해결 된듯.
-        //Game.Instance.LoadScene(new StartScene()); //도르마무 문제가 있던 23일 오전 11시까지 썼던 거. 혹시 몰라 봉인
-    }));
-        
         
         /*selections.Add(new Menu("공격", LoadBattleAttackScene));*/ // 공격 씬 호출
     }

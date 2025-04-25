@@ -32,8 +32,5 @@ public class Start : SceneBase
 
     public override void RenderCustomArea()
     {
-        Console.WriteLine("========================================");
-        Console.WriteLine(" Sparta RPG Adventure에 오신 것을 환영합니다!");
-        Console.WriteLine("========================================");
     }
 }

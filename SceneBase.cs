@@ -46,7 +46,10 @@ public abstract class SceneBase
 
         for (int i = 1; i < selections.Count; i++)
         {
-            Console.WriteLine($"{i}. {selections[i].Name}");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{i}.");
+            Console.ResetColor();
+            Console.WriteLine($"{selections[i].Name}");
         }
 
         Console.WriteLine();
@@ -54,7 +57,10 @@ public abstract class SceneBase
     }
     public void ShowQuitMenu()
     {
-        Console.WriteLine($"{0}. {selections[0].Name}\n");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write($"0.");
+        Console.ResetColor();
+        Console.WriteLine($"{selections[0].Name}\n");
     }
 
     // 입력 받는 함수
