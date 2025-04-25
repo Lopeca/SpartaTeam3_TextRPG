@@ -14,6 +14,8 @@ public class StartScene : SceneBase
 
         selections.Add(new Menu("상태 보기", () => Game.Instance.LoadScene(new PlayerStatusScene())));
         selections.Add(new Menu("전투 시작", () => Game.Instance.LoadScene(new BattleStartScene())));
+        selections.Add(new Menu("상점", () => Game.Instance.LoadScene(new ShopScene())));
+        selections.Add(new Menu("휴식하기", () => Game.Instance.LoadScene(new RestScene())));
         selections.Add(new Menu("저장하기", () => Save()));
         
         //[나가기, 상태보기, 전투시작, 저장하기]
@@ -41,6 +43,7 @@ public class StartScene : SceneBase
 
 
         ShowSelections();
+        Console.WriteLine();
     }
 
     // 씬 안에서 쓰는 메서드를 밑에 자유롭게 만들면 됩니다

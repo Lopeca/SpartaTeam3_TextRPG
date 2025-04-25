@@ -51,14 +51,6 @@ public class ChooseCharacterScene : SceneBase
         }          
     }
 
-    private void ChangeQuitAction(Action action)
-    {
-        if (selections[0] is Menu quitMenu)
-        {
-            quitMenu.menuAction = action;
-        }
-    }
-
 
     // 씬에 실제로 출력되는 함수는 여기, SceneBase에서 이 함수 후에 종료 버튼과 입력을 알아서 묻습니다.
     public override void RenderCustomArea()

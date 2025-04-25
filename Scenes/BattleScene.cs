@@ -124,7 +124,7 @@ namespace Team3TextRPG.Scenes
                 bool Gamnabit = random.Next(0, 100) < 10;       // 10% 확률로 회피
                 bool isCritical = !Gamnabit && random.Next(0, 100) < 15; // 회피가 아닐 때 15% 확률로 치명타
 
-                int baseDamage = player.Atk;
+                int baseDamage = player.MaxAtk;
                 double variation = baseDamage * 0.1; //실제 공격에는 10%의 피해 증감량이 있음
                 int min = (int)Math.Ceiling(baseDamage - variation);
                 int max = (int)Math.Floor(baseDamage + variation + 1);

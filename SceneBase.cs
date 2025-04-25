@@ -109,5 +109,12 @@ public abstract class SceneBase
         selections.Clear();
         selections.Add(new Menu("나가기", Game.Instance.CloseScene));
     }
+    protected void ChangeQuitAction(Action action)
+    {
+        if (selections[0] is Menu quitMenu)
+        {
+            quitMenu.menuAction = action;
+        }
+    }
 }
 // 커밋 테스트

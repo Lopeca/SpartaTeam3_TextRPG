@@ -55,7 +55,7 @@ public class Player
 
     public int CurrentDungeonFloor { get; set; }
     public List<int> EquippedList { get; set; }
-    public List<int> Inventory { get; set; }
+    public List<int> EquipInventory { get; set; }
 
 
 
@@ -64,19 +64,24 @@ public class Player
     // bonusHP는 나중에 아이템 추가 제거할 때 실시간 계산해서 넣을 변수입니다
     // 최대 체력 계산할 때마다 위의 아이템 리스트에서 꺼내오는 방법도 있지만 매번 연산해야할 게 많아지니까
     // 체력 옵션 붙은 아이템 추가/제거할 때나 처음 게임 로드할 때 실시간으로 계산해서 들고 있을 일종의 캐싱 목적 변수입니다
-    private int bonusHP;
-    private int bonusMP;
-    private int bonusAtk;
-    private int bonusDef;
+    public int BonusHP { get; set; }
+    public int BonusMP { get; set; }
+    public int BonusAtk { get; set; }
+    public int BonusDef { get; set; }
 
-    public int MaxHP => BaseHp + bonusHP;
+    public int MaxHP => BaseHp + BonusHP;
+    public int MaxMP => BaseMp + BonusMP;
+
+    public int MaxAtk => Atk + BonusAtk;
+    public int MaxDef => Def + BonusDef;
 
     public Player()
     {
         Name = "";
         Level = 1;
         Gold = 1000;
-        Inventory = [];
+        EquipInventory = [];
+        EquippedList = [];
         RequiredExp = CalculateRequiredExp();
         CurrentDungeonFloor = 1;
     }
@@ -128,10 +133,29 @@ public class Player
     }
     public void EquipItem(int itemId)
     {
-        int id = Inventory.Find(id => id == itemId);
+        int id = EquipInventory.Find(id => id == itemId);
 
-        Inventory.Remove(id);
+        EquipInventory.Remove(id);
         EquippedList.Add(id);
+
+        EquipDB eqItem = ItemDB.equipList.Find(item => item.itemID == id);
+
+        BonusAtk += eqItem.itemAtk;
+        BonusDef += eqItem.itemDef;
+        
+    }
+
+    public void UnEquipItem(int itemId)
+    {
+        int id = EquipInventory.Find(id => id == itemId);
+
+        EquipInventory.Add(id);
+        EquippedList.Remove(id);
+
+        EquipDB eqItem = ItemDB.equipList.Find(item => item.itemID == id);
+
+        BonusAtk -= eqItem.itemAtk;
+        BonusDef -= eqItem.itemDef;
     }
     public void GainExp(int exp)
     {
@@ -167,5 +191,17 @@ public class Player
 
         CurrentHp -= resultDamage;
     }
+
+    internal bool HasItem(EquipDB item)
+    {
+        bool hasItem = false;
+
+        if (EquipInventory.Contains(item.itemID)) hasItem = true;
+        else if (EquippedList.Contains(item.itemID)) hasItem = true;
+
+        return hasItem;
+    }
+
+  
 }
 

@@ -29,6 +29,8 @@ namespace Team3TextRPG
         public void TakeDamage(int damage)
         {
             int resultDamage = damage - Def;
+            if (resultDamage <= 0) resultDamage = 1;
+
             CurrentHP -= resultDamage;
             if(CurrentHP < 0) CurrentHP = 0;
         }

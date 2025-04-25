@@ -10,7 +10,9 @@ public class PlayerStatusScene : SceneBase
 {
     Player player => Game.Instance.player;
    
-    public override void AddSelections() { }
+    public override void AddSelections() {
+        selections.Add(new Menu("장비", () => Game.Instance.LoadScene(new EquipInventoryScene())));
+    }
 
     public override void RenderCustomArea()
     {
@@ -21,12 +23,19 @@ public class PlayerStatusScene : SceneBase
         Console.WriteLine($"Lv. {player.Level}");
         Console.WriteLine($"{player.Name} ( {CharacterClassStr.GetKRString(player.CharacterClass)} )");
         Console.WriteLine();
-        Console.WriteLine($"공격력 : {player.Atk}");
-        Console.WriteLine($"방어력 : {player.Def}");
+        Console.Write($"공격력 : {player.Atk} ");
+        if (player.BonusAtk != 0) GraphicUtility.WriteWithColor($" (+ {player.BonusAtk})", ConsoleColor.Green);
+        Console.WriteLine();                                                                           
+        Console.Write($"방어력 : {player.Def}");                                                       
+        if (player.BonusDef != 0) GraphicUtility.WriteWithColor($" (+ {player.BonusDef})", ConsoleColor.Green);
+        Console.WriteLine();
         Console.WriteLine($"체  력 : {player.CurrentHp} / {player.MaxHP}");
+        Console.WriteLine($"마  나 : {player.CurrentMp} / {player.MaxMP}");
         Console.WriteLine($"경험치 : {player.CurrentExp} / {player.RequiredExp}");
         Console.WriteLine($"Gold   : {player.Gold} G");
         GraphicUtility.DrawLine();
         Console.WriteLine();
+
+        ShowSelections();
     }
 }
