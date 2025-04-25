@@ -28,29 +28,31 @@ namespace Team3TextRPG.Scenes
 
         void PrintPlayerStatus()//이거는 PlayerLSH cs 파일에서 아래의 정보들이 있게끔 조금 수정했습니다.
         {
-            Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
+            Console.WriteLine($"Lv. {player.Level} {player.Name} ({CharacterClassStr.GetKRString(player.CharacterClass)})");
             Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
         }
         // 기존 GenerateMonsters()는 더 이상 호출하지 않음
         // Init() 또는 AddSelections()에서 받은 monsters만 사용
         //어떤 선택지가 있는가
         public override void AddSelections()
-        { 
-            Game.Instance.messageLog = null; //기존의 메세지 초기화(캐릭터 생성됨 문구가 뜨길래요)여기보다 좋은 위치가 있다면 옮기겠습니다
-            selections.Clear();//혹시 남아있을지 모르는 다른 구문 치워버리기 
-            selections.Add(new Menu("도망친다", () =>
-            {
-                Game.Instance.ResetToStart();
-                //Game.Instance.ChangeScene(new StartScene());
-            }));
+        {
             //배틀 스타트씬으로 돌아가는 것마저 스킵하면서(실제론 거쳐가는 느낌) 시작화면으로 돌아가기 위한 수정
             selections.Add(new Menu("공격", AttackPhase));
-            
+            if (selections[0] is Menu quitMenu)
+            {
+                quitMenu.ChangeName("도망친다");
+            }            
+            //selections.Add(new Menu("도망친다", () =>
+            //{
+            //    Game.Instance.CloseScene();
+            //    //Game.Instance.ChangeScene(new StartScene());
+            //}));           
         }
 
         //씬에 실제로 적용되는 함수
         public override void RenderCustomArea()
         {
+            GraphicUtility.WriteTitle("전투");
             ShowMonsterStatus();
             ShowPlayerStatus();
             Console.WriteLine();
@@ -59,24 +61,30 @@ namespace Team3TextRPG.Scenes
         
         void AttackPhase()
         {
-            Console.Clear();
-            Console.WriteLine("Battle!!");
-            Console.WriteLine();
 
+            Console.Clear();
+            GraphicUtility.WriteTitle("전투 - 공격");
+
+            GraphicUtility.DrawLine();
             // 1. 몬스터 목록 다시 출력
             for (int i = 0; i < monsters.Count; i++)
             {
                 string status = monsters[i].ToString();
-                Console.WriteLine($"{i + 1}. {status}");
+                GraphicUtility.WriteWithColor($"{i + 1}. ", ConsoleColor.Green);
+                GraphicUtility.WriteWithColor(status, monsters[i].IsDead ? ConsoleColor.DarkGray : ConsoleColor.White);
+                Console.WriteLine();
             }
 
-            Console.WriteLine();
+            GraphicUtility.DrawLine();
+
+           
             Console.WriteLine("[내정보]");
-            Console.WriteLine($"Lv. {player.Level} {player.Name} ({player.CharacterClass})");
+            Console.WriteLine($"Lv. {player.Level} {player.Name} ({CharacterClassStr.GetKRString(player.CharacterClass)})");
             Console.WriteLine($"HP {player.CurrentHp} / {player.BaseHp}");
             Console.WriteLine();
 
-            Console.WriteLine("0. 취소");
+            GraphicUtility.WriteWithColor("0. ", ConsoleColor.Red);
+            Console.WriteLine("취소\n");
             Console.WriteLine("대상을 선택해주세요.");
 
             // 2. 입력 받기
@@ -93,7 +101,9 @@ namespace Team3TextRPG.Scenes
 
                 if (index == 0)
                 {
-                    Game.Instance.CloseScene();
+                    RefreshSelections();
+                    AddSelections();     // 메뉴 재설정
+                    RenderScene();       // 전투씬 다시 그리기
                     return;
                 }
 
@@ -118,23 +128,26 @@ namespace Team3TextRPG.Scenes
                 int max = (int)Math.Floor(baseDamage + variation + 1);
                 int finalDamage = new Random().Next(min, max);
 
-                target.CurrentHP -= finalDamage;
-
-                Console.WriteLine();
-                Console.WriteLine($"Chad의 공격!");
-                Console.WriteLine($"Lv.{target.Level} {target.Name} 을(를) 맞췄습니다. [데미지 : {finalDamage}]");
+                int targetPrevHp = target.CurrentHP;
+                target.TakeDamage(finalDamage);
+                int appliedDamage = finalDamage - target.Def;
+               
+                Console.Clear();
+                Console.WriteLine($"{Game.Instance.player.Name}의 공격!");
+                Console.Write($"Lv.{target.Level} {target.Name} 을(를) 맞췄습니다. ");
+                GraphicUtility.WriteWithColor($"[대미지 : {appliedDamage}]\n", ConsoleColor.Red);
 
                 if (target.IsDead)//타겟이 죽으면 사망처리
                 {
-                    Console.WriteLine($"\nLv.{target.Level} {target.Name}\nHP {target.CurrentHP + finalDamage} → Dead");
+                    Console.WriteLine($"\nLv.{target.Level} {target.Name}\nHP {targetPrevHp} → Dead");
                 }
                 else //타겟이 살면 현제 피통 감소량 반영
                 {
-                    Console.WriteLine($"\nLv.{target.Level} {target.Name}\nHP {target.CurrentHP + finalDamage} → {target.CurrentHP}");
+                    Console.WriteLine($"\nLv.{target.Level} {target.Name}\nHP {targetPrevHp} → {target.CurrentHP}");
                 }
 
                 Console.WriteLine();
-                Console.WriteLine("0. 다음");
+                Console.WriteLine("(엔터) 다음");
                 Console.ReadLine();
 
                 break;
@@ -146,18 +159,22 @@ namespace Team3TextRPG.Scenes
         }
         void EnemyPhase() //몬스터의 공격
         {
+            
             Console.Clear();
-            Console.WriteLine("Enemy Phase\n");
+            GraphicUtility.WriteTitle("전투 - 상대 턴");
 
             foreach (var monster in monsters)
             {
                 if (monster.IsDead) continue;
 
-                int damage = monster.Level * 2;
-                player.CurrentHp -= damage;
+                int damage = monster.Atk;
+
+                int prevHp = player.CurrentHp;
+                player.TakeDamage(damage);
 
                 Console.WriteLine($"Lv.{monster.Level} {monster.Name}의 공격!");
-                Console.WriteLine($"{player.Name}을(를) 맞췄습니다. [데미지 : {damage}]");
+                Console.Write($"{player.Name}을(를) 맞췄습니다. ");
+                GraphicUtility.WriteWithColor($"[대미지 : {prevHp - player.CurrentHp}]\n", ConsoleColor.Red);
                 Console.WriteLine($"현재 HP : {player.CurrentHp}\n");
 
                 if (player.CurrentHp <= 0) //플레이어의 체력이 0이하로 내려갔는지 아닌지 체크
@@ -166,7 +183,7 @@ namespace Team3TextRPG.Scenes
                     break; //즉시 전투 루프종료. 그러면 패배페이즈로.
                 }
 
-                Console.WriteLine("0. 다음"); //살았으면 전투 속행
+                Console.WriteLine("(엔터) 다음"); //살았으면 전투 속행
                 Console.ReadLine();
             }
 
@@ -178,7 +195,7 @@ namespace Team3TextRPG.Scenes
                     Console.Clear();
                     Console.WriteLine("당신은 차디찬 던전에서 삶을 마감했다!");
                     Console.ReadLine();
-                    Game.Instance.LoadScene(new StartScene()); //처음으로 돌아갑니다. 사실상 재시작이나 다름없습니다
+                    Game.Instance.CloseScene(); //처음으로 돌아갑니다. 사실상 재시작이나 다름없습니다
                     return;
                 }
 
@@ -201,7 +218,7 @@ namespace Team3TextRPG.Scenes
                     
                     return;
                 }
-                selections.Clear();
+                RefreshSelections();
                 AddSelections();     // 메뉴 재설정
                 RenderScene();       // 전투씬 다시 그리기
             }
@@ -210,18 +227,20 @@ namespace Team3TextRPG.Scenes
         //몬스터 목록을 출력
         void ShowMonsterStatus()
         {
-            Console.WriteLine("Battle!!\n");
-
+            
+            //Console.WriteLine("[ Battle!! ]\n");
+            GraphicUtility.DrawLine();
             for (int i = 0; i < monsters.Count; i++)
             {
                 string status = monsters[i].ToString();
-                Console.WriteLine($"{i + 1}. {status}");
+                GraphicUtility.WriteWithColor(status + "\n", monsters[i].IsDead ? ConsoleColor.DarkGray : ConsoleColor.White);
             }
+            GraphicUtility.DrawLine();
         }
 
 
 
-       
+
         //void ShowPlayerStatus() { }
         //void AttackPhase() {  }
         //

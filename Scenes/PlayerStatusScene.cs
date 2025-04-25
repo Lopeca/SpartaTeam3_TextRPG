@@ -19,12 +19,12 @@ public class PlayerStatusScene : SceneBase
 
         GraphicUtility.DrawLine();
         Console.WriteLine($"Lv. {player.Level}");
-        Console.WriteLine($"{player.Name} ( {CharacterClassStr.GetClassString(player.CharacterClass)} )");
+        Console.WriteLine($"{player.Name} ( {CharacterClassStr.GetKRString(player.CharacterClass)} )");
         Console.WriteLine();
         Console.WriteLine($"공격력 : {player.Atk}");
         Console.WriteLine($"방어력 : {player.Def}");
         Console.WriteLine($"체  력 : {player.CurrentHp} / {player.MaxHP}");
-        Console.WriteLine($"경험치 : {player.currentExp} / {player.BaseExp}");
+        Console.WriteLine($"경험치 : {player.CurrentExp} / {player.RequiredExp}");
         Console.WriteLine($"Gold   : {player.Gold} G");
         GraphicUtility.DrawLine();
         Console.WriteLine();

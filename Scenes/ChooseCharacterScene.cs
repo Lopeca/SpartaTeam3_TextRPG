@@ -102,7 +102,7 @@ public class ChooseCharacterScene : SceneBase
 
         if (characters.Count == 0)
         {
-            Console.WriteLine("캐릭터가 없습니다. 생성해주세요.");
+            Console.WriteLine("캐릭터가 없습니다. 생성해주세요.\n");
         }
         else
         {
@@ -176,7 +176,7 @@ public class ChooseCharacterScene : SceneBase
 
     private static string CharacterInfoString(Player character)
     {
-        return $"Lv.{character.Level} {character.Name} ({CharacterClassStr.GetClassString(character.CharacterClass)})";
+        return $"Lv.{character.Level} {character.Name} ({CharacterClassStr.GetKRString(character.CharacterClass)})";
     }
 
 

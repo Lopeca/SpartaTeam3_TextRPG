@@ -11,6 +11,11 @@ public class IntroScene : SceneBase
     public override void AddSelections()
     {
         selections.Add(new Menu("시작", () => Game.Instance.LoadScene(new ChooseCharacterScene())));
+
+        if (selections[0] is Menu quitMenu)
+        {
+            quitMenu.ChangeName("종료");
+        }
     }
 
     // 씬에 실제로 출력되는 함수는 여기, SceneBase에서 이 함수 후에 종료 버튼과 입력을 알아서 묻습니다.

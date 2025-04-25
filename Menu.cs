@@ -18,6 +18,10 @@ public class Menu : ISelectable
         menuAction += action;
     }
 
+    public void ChangeName(string name)
+    {
+        Name = name;
+    }
 
     // menuAction에 등록시킨 함수를 실행시키는 곳
     // 이렇게 하면 같은 메뉴 클래스인데 서로 다른 기능을 실행시킬 수 있음

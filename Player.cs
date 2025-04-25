@@ -17,7 +17,7 @@ public static class CharacterClassStr
         { CharacterClass.Assassin, "도적" }
     };
 
-    public static string GetClassString(CharacterClass cClass)   // ChadStr.GetChadString(Chad chad)로 직업으로부터 문자열 얻을 수 있음
+    public static string GetKRString(CharacterClass cClass)   // ChadStr.GetChadString(Chad chad)로 직업으로부터 문자열 얻을 수 있음
     {
         Map.TryGetValue(cClass, out var result);
         return result;
@@ -50,12 +50,14 @@ public class Player
     public int CurrentMp { get; set; }
     public int Gold { get; set; }
 
-    public int currentExp { get; set; }
+    public int CurrentExp { get; set; }
+    public int RequiredExp { get; set; }
 
+    public int CurrentDungeonFloor { get; set; }
     public List<int> EquippedList { get; set; }
     public List<int> Inventory { get; set; }
 
-    public int BaseExp {  get; set; }
+
 
     public List<int> ItemId { get; set; }
 
@@ -75,6 +77,13 @@ public class Player
         Level = 1;
         Gold = 1000;
         Inventory = [];
+        RequiredExp = CalculateRequiredExp();
+        CurrentDungeonFloor = 1;
+    }
+
+    private int CalculateRequiredExp()
+    {
+        return (int)(50 * Math.Pow(Level, 1.5));
     }
 
     public void InitByClass(CharacterClass chClass)
@@ -83,7 +92,7 @@ public class Player
         switch (chClass)
         {
             case CharacterClass.Warrior:
-                Atk = 12;
+                Atk = 20;
                 Def = 8;
                 BaseHp = 150;
                 BaseMp = 50;
@@ -95,13 +104,13 @@ public class Player
                 BaseMp = 400;
                 break;
             case CharacterClass.Archer:
-                Atk = 8;
+                Atk = 15;
                 Def = 5;
                 BaseHp = 120;
                 BaseMp = 200;
                 break;
             case CharacterClass.Assassin:
-                Atk = 9;
+                Atk = 18;
                 Def = 4;
                 BaseHp = 125;
                 BaseMp = 250;
@@ -124,8 +133,39 @@ public class Player
         Inventory.Remove(id);
         EquippedList.Add(id);
     }
-    public void GainExp(int exp) {
+    public void GainExp(int exp)
+    {
         // 경험치 얻으면서 레벨업 로직
+        CurrentExp += exp;
+
+        if (CurrentExp > RequiredExp)
+        {
+            LevelUp();
+            CurrentExp -= RequiredExp;
+            RequiredExp = CalculateRequiredExp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        Level++;
+        Atk += 2;
+        Def += 1;
+        BaseHp += 30;
+        BaseMp += 30;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        int resultDamage = damage - Def;
+
+        if (resultDamage <= 0)
+        {
+            CurrentHp -= 1;
+            return;
+        }
+
+        CurrentHp -= resultDamage;
     }
 }
 

@@ -28,10 +28,12 @@ namespace Team3TextRPG
 
         public void TakeDamage(int damage)
         {
-            CurrentHP -= damage;
+            int resultDamage = damage - Def;
+            CurrentHP -= resultDamage;
+            if(CurrentHP < 0) CurrentHP = 0;
         }
         public override string ToString()
-        {
+        {   
             return $"Lv.{Level} {Name} HP {CurrentHP}/{data.hp}";
         }
     }
